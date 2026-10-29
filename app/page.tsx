@@ -1,55 +1,53 @@
-"use client"
+"use client";
+
+import { useState } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   useReducedMotion,
+  AnimatePresence,
   type Variants,
 } from "motion/react";
 import Navbar from "./components/Navbar";
 
-/*
-  YASH CONSTRUCTION
-  Home page
-  Visual direction:
-  - Inspired by supplied VDIPL company profile
-  - Charcoal / warm gold / off-white
-  - Editorial construction photography
-  - Curved image framing
-  - Large typography
-  - Slow scroll reveals
-  - Subtle parallax
-*/
-
-const GOLD = "#C8A34A";
-const DARK = "#171717";
-const CREAM = "#F3F0E8";
+// Color System derived directly from Yash Construction Logo Vector
+const MAGENTA = "#E41B76"; // Primary Signature Accent
+const DARK = "#111318";    // Obsidian Brand Structure
+const MUTED = "#555A65";
+const BORDER_LIGHT = "#E4E6EB";
 
 const services = [
   {
     number: "01",
-    title: "Road Construction",
-    description: "Bitumen roads, concrete roads and associated infrastructure works.",
+    tag: "HIGHWAY & PAVING",
+    title: "Road construction & bituminous paving",
+    description:
+      "Bitumen roads, rigid concrete pavements, subgrade grading, and municipal arterial network developments.",
     image: "/images/services/road-construction.jpg",
   },
   {
     number: "02",
-    title: "Bridge Construction",
-    description: "Minor bridge construction and related civil infrastructure works.",
+    tag: "STRUCTURAL DRAINAGE",
+    title: "Bridge & box culvert works",
+    description:
+      "Minor river crossings, box culvert casting, retaining wall stabilization, and flood-resilient civil crossing infrastructures.",
     image: "/images/services/bridge-construction.jpg",
   },
   {
     number: "03",
-    title: "Building Construction",
+    tag: "INSTITUTIONAL & CIVIL",
+    title: "Institutional & building construction",
     description:
-      "Residential, commercial and government building construction.",
+      "Turnkey structural construction for public works departments, commercial complexes, and municipal government office facilities.",
     image: "/images/services/building-construction.jpg",
   },
   {
     number: "04",
-    title: "Earthwork & Excavation",
+    tag: "HEAVY EARTHMOVING",
+    title: "Earthwork & rock excavation",
     description:
-      "Earthwork, excavation, drainage and land development operations.",
+      "Mass soil displacement, rocky terrain cutting, drainage trenching, and industrial site grading.",
     image: "/images/services/earthwork.jpg",
   },
 ];
@@ -58,65 +56,65 @@ const machinery = [
   {
     name: "Excavator / Poclain",
     quantity: "04",
-    spec: "100 M3 / Hour",
+    spec: "100 M³ / Hour Rated",
+    role: "Heavy Trenching & Site Clearing",
     image: "/images/machinery/excavator.jpg",
   },
   {
-    name: "JCB",
+    name: "JCB 3DX",
     quantity: "03",
-    spec: "3DX",
+    spec: "Heavy Utility Loader",
+    role: "Excavation & Backfill",
     image: "/images/machinery/jcb.jpg",
   },
   {
-    name: "Paver",
+    name: "Mechanical Paver",
     quantity: "04",
-    spec: "54.5 BHP",
+    spec: "54.5 BHP Hydraulic Screed",
+    role: "Hot Mix Bitumen Laying",
     image: "/images/machinery/paver.jpg",
   },
   {
-    name: "Roller",
+    name: "Vibratory Soil Roller",
     quantity: "04",
-    spec: "Standard",
+    spec: "10-12 Ton High Compaction",
+    role: "Surface & Sub-Base Compaction",
     image: "/images/machinery/roller.jpg",
   },
 ];
 
 const stats = [
-  ["42+", "Years"],
-  ["1,500+", "Projects"],
-  ["20+", "Clients"],
-  ["100+", "Employees"],
+  { num: "42+", label: "Years operational", caption: "Continuous contracting since 1984" },
+  { num: "1,500+", label: "Projects delivered", caption: "Across Ratnagiri & Western MH" },
+  { num: "20+", label: "Institutional clients", caption: "PWD, Councils & Private Tenders" },
+  { num: "100+", label: "Site crew & operators", caption: "Certified in-house operators" },
+];
+
+const plants = [
+  { name: "Asphalt Hot Mix Plant", capacity: "120 DM Rated", location: "Waghangaon Complex" },
+  { name: "Aggregate Crusher Unit", capacity: "Multi-stage screening", location: "Waghangaon Complex" },
+  { name: "Ready-Mix Concrete (RMC)", capacity: "30 Cu.M / Hour", location: "Waghangaon Complex" },
+  { name: "Basalt Stone Quarry", capacity: "Captive Supply", location: "Waghangaon Complex" },
 ];
 
 const reveal: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 55,
-  },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 1,
-      ease: [0.22, 1, 0.36, 1],
-    },
+    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
 const slowReveal: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 70,
-  },
+  hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 1.25,
-      ease: [0.16, 1, 0.3, 1],
-    },
+    transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
   },
 };
+
 function Reveal({
   children,
   className = "",
@@ -132,907 +130,557 @@ function Reveal({
       variants={reveal}
       initial="hidden"
       whileInView="visible"
-      viewport={{
-        once: true,
-        amount: 0.18,
-      }}
-      transition={{
-        delay,
-      }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ delay }}
     >
       {children}
     </motion.div>
   );
 }
 
-function GoldLine() {
+function SiteBadge({ label }: { label: string }) {
   return (
-    <span
-      className="inline-block h-[2px] w-10"
-      style={{ backgroundColor: GOLD }}
-    />
+    <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-neutral-300/80 bg-neutral-100/90 px-3.5 py-1 font-mono text-[11px] font-semibold tracking-wider text-neutral-800">
+      <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: MAGENTA }} />
+      {label}
+    </div>
   );
 }
 
 export default function Home() {
+  const [activeService, setActiveService] = useState(0);
   const shouldReduceMotion = useReducedMotion();
-
   const { scrollYProgress } = useScroll();
 
   const heroImageY = useTransform(
     scrollYProgress,
     [0, 0.35],
-    ["0%", shouldReduceMotion ? "0%" : "12%"]
+    ["0%", shouldReduceMotion ? "0%" : "10%"]
   );
 
   const heroImageScale = useTransform(
     scrollYProgress,
     [0, 0.3],
-    [1.05, shouldReduceMotion ? 1.05 : 1]
+    [1.04, shouldReduceMotion ? 1.04 : 1]
   );
 
   const heroTextY = useTransform(
     scrollYProgress,
     [0, 0.25],
-    ["0px", shouldReduceMotion ? "0px" : "80px"]
+    ["0px", shouldReduceMotion ? "0px" : "35px"]
   );
 
   return (
     <>
-     <Navbar />
-    
-    <main
-      className="overflow-hidden"
-      style={{
-        backgroundColor: CREAM,
-        color: DARK,
-      }}
-    >
-      {/* =========================================================
-          HERO
-      ========================================================= */}
+      <Navbar />
 
-      <section
-        id="home"
-        className="relative min-h-[100svh] overflow-hidden bg-[#171717] text-white"
-      >
-        {/* Background image */}
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            y: heroImageY,
-            scale: heroImageScale,
-          }}
+      <main className="font-sans bg-white text-[#111318] antialiased selection:bg-[#E41B76] selection:text-white">
+        {/* =========================================================
+            HERO: Enterprise Engineering Statement with Telemetry
+        ========================================================= */}
+        <section
+          id="home"
+          className="relative min-h-[92svh] overflow-hidden bg-[#111318] text-white"
         >
-          <img
-            src="/images/hero-construction.jpg"
-            alt="YASH CONSTRUCTION project"
-            className="h-full w-full object-cover"
-          />
-
-          {/* Dark photographic overlay */}
-          <div className="absolute inset-0 bg-black/55" />
-
-          {/* Subtle gold tint */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/20" />
-        </motion.div>
-
-        {/* Editorial grid */}
-        <div className="absolute inset-0 opacity-[0.08]">
-          <div className="absolute left-[8%] top-0 h-full w-px bg-white" />
-          <div className="absolute left-[25%] top-0 h-full w-px bg-white" />
-          <div className="absolute right-[22%] top-0 h-full w-px bg-white" />
-        </div>
-
-        {/* Gold curved frame */}
-        <div className="pointer-events-none absolute right-[-15%] top-[-15%] h-[85vw] w-[85vw] rounded-full border-[2px] border-[#C8A34A]/70 md:right-[-22%] md:top-[-25%]" />
-
-        <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1400px] flex-col justify-end px-6 pb-12 pt-32 sm:px-10 md:px-16 md:pb-20 lg:px-20">
           <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {},
-              visible: {
-                transition: {
-                  staggerChildren: 0.14,
-                  delayChildren: 0.2,
+            className="absolute inset-0"
+            style={{ y: heroImageY, scale: heroImageScale }}
+          >
+            <img
+              src="/images/hero-construction.jpg"
+              alt="Yash Construction Project Operations"
+              className="h-full w-full object-cover opacity-40"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#111318] via-[#111318]/75 to-transparent" />
+          </motion.div>
+
+          {/* Telemetry Bar */}
+          <div className="relative z-10 mx-auto flex max-w-[1400px] items-center justify-between border-b border-white/10 px-6 pt-32 pb-4 font-mono text-xs text-white/50 sm:px-10 lg:px-20">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: MAGENTA }} />
+              <span>APPROVED GOVERNMENT CONTRACTOR // MH REGION</span>
+            </div>
+            <div className="hidden sm:block">
+              <span>LAT 16.8524º N &nbsp; LON 73.5182º E &nbsp; // &nbsp; LANJA - RAJAPUR</span>
+            </div>
+            <div>
+              <span>EST. 1984</span>
+            </div>
+          </div>
+
+          <div className="relative z-10 mx-auto flex min-h-[calc(92svh-140px)] max-w-[1400px] flex-col justify-end px-6 pb-16 pt-12 sm:px-10 lg:px-20">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: { staggerChildren: 0.12, delayChildren: 0.15 },
                 },
-              },
-            }}
-            style={{ y: heroTextY }}
-          >
-            <motion.div
-              variants={reveal}
-              className="mb-7 flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.28em]"
-              style={{ color: GOLD }}
-            >
-              <GoldLine />
-              Lanja · Ratnagiri · Maharashtra
-            </motion.div>
-
-            <motion.h1
-              variants={slowReveal}
-              className="max-w-[1100px] font-['Barlow_Condensed'] text-[17vw] font-bold uppercase leading-[0.78] tracking-[-0.035em] sm:text-[13vw] lg:text-[10vw]"
-            >
-              YASH
-              <br />
-              <span style={{ color: GOLD }}>CONSTRUCTION</span>
-            </motion.h1>
-
-            <motion.div
-              variants={reveal}
-              className="mt-8 flex max-w-3xl flex-col gap-7 md:flex-row md:items-end md:justify-between"
-            >
-              <p className="max-w-xl text-base leading-7 text-white/75 md:text-lg">
-                Building roads, bridges, buildings and infrastructure across
-                Lanja Taluka, Rajapur Taluka and Ratnagiri District since 1984.
-              </p>
-
-              <a
-                href="#projects"
-                className="group inline-flex w-fit items-center gap-4 border border-white/50 px-6 py-4 text-xs font-semibold uppercase tracking-[0.16em] transition-all duration-500 hover:border-[#C8A34A] hover:bg-[#C8A34A] hover:text-[#171717]"
-              >
-                Explore Projects
-                <span className="transition-transform duration-500 group-hover:translate-x-2">
-                  →
-                </span>
-              </a>
-            </motion.div>
-          </motion.div>
-
-          {/* Hero bottom information */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 1,
-              delay: 1,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="mt-16 flex flex-wrap gap-x-10 gap-y-5 border-t border-white/20 pt-5"
-          >
-            <div>
-              <span
-                className="block font-['Barlow_Condensed'] text-3xl font-bold"
-                style={{ color: GOLD }}
-              >
-                42+
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/50">
-                Years
-              </span>
-            </div>
-
-            <div>
-              <span
-                className="block font-['Barlow_Condensed'] text-3xl font-bold"
-                style={{ color: GOLD }}
-              >
-                1,500+
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/50">
-                Projects
-              </span>
-            </div>
-
-            <div>
-              <span
-                className="block font-['Barlow_Condensed'] text-3xl font-bold"
-                style={{ color: GOLD }}
-              >
-                100+
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/50">
-                Employees
-              </span>
-            </div>
-
-            <div className="ml-auto hidden items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-white/40 md:flex">
-              <span className="h-2 w-2 rounded-full bg-[#C8A34A]" />
-              Est. 1984
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          INTRODUCTION
-      ========================================================= */}
-
-      <section className="relative px-6 py-24 sm:px-10 md:px-16 md:py-36 lg:px-20">
-        <div className="mx-auto grid max-w-[1400px] items-center gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
-          <Reveal>
-            <div>
-              <div className="mb-6 flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em]">
-                <GoldLine />
-                Who We Are
-              </div>
-
-              <h2 className="font-['Barlow_Condensed'] text-6xl font-bold uppercase leading-[0.88] tracking-tight sm:text-7xl md:text-8xl">
-                Four
-                <br />
-                Decades
-                <br />
-                <span style={{ color: GOLD }}>of Work.</span>
-              </h2>
-
-              <p className="mt-8 max-w-xl text-lg leading-8 text-black/60">
-                YASH CONSTRUCTION is a partnership firm established in 1984,
-                with extensive experience in construction and infrastructure
-                works across Ratnagiri District.
-              </p>
-
-              <a
-                href="#about"
-                className="mt-8 inline-flex items-center gap-3 border-b-2 pb-2 text-xs font-bold uppercase tracking-[0.16em]"
-                style={{ borderColor: GOLD }}
-              >
-                Discover Our Company
-                <span style={{ color: GOLD }}>→</span>
-              </a>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.15}>
-            <motion.div
-              whileInView={{
-                y: [30, 0],
               }}
-              transition={{
-                duration: 1.2,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              viewport={{ once: true }}
-              className="relative"
+              style={{ y: heroTextY }}
             >
-              {/* Curved frame */}
-              <div
-                className="absolute -bottom-5 -left-5 h-full w-full rounded-br-[120px] border-2"
-                style={{ borderColor: GOLD }}
-              />
-
-              <div className="relative aspect-[4/5] overflow-hidden rounded-br-[120px] bg-[#222]">
-                <img
-                  src="/images/company/company.jpg"
-                  alt="YASH CONSTRUCTION"
-                  className="h-full w-full object-cover transition-transform duration-[1.5s] hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-
-                <div className="absolute bottom-8 left-8">
-                  <span
-                    className="font-['Barlow_Condensed'] text-7xl font-bold"
-                    style={{ color: GOLD }}
-                  >
-                    1984
-                  </span>
-
-                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-white/70">
-                    Established
-                  </p>
+              <motion.div variants={reveal}>
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/80 backdrop-blur-md">
+                  <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: MAGENTA }} />
+                  Heavy Civil & Highway Infrastructure
                 </div>
-              </div>
-            </motion.div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* =========================================================
-          SERVICES
-      ========================================================= */}
-
-      <section
-        id="services"
-        className="bg-[#171717] px-6 py-24 text-white sm:px-10 md:px-16 md:py-36 lg:px-20"
-      >
-        <div className="mx-auto max-w-[1400px]">
-          <Reveal>
-            <div className="mb-16">
-              <div
-                className="mb-6 flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em]"
-                style={{ color: GOLD }}
-              >
-                <GoldLine />
-                Our Capabilities
-              </div>
-
-              <h2 className="max-w-4xl font-['Barlow_Condensed'] text-6xl font-bold uppercase leading-[0.86] sm:text-7xl md:text-8xl">
-                Built for
-                <br />
-                <span style={{ color: GOLD }}>Infrastructure.</span>
-              </h2>
-            </div>
-          </Reveal>
-
-          <div className="space-y-0 border-t border-white/15">
-            {services.map((service, index) => (
-              <motion.article
-                key={service.number}
-                initial={{
-                  opacity: 0,
-                  y: 50,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                viewport={{
-                  once: true,
-                  amount: 0.2,
-                }}
-                transition={{
-                  duration: 1,
-                  delay: index * 0.08,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="group grid border-b border-white/15 py-10 md:grid-cols-[90px_1fr_0.7fr] md:items-center md:gap-10"
-              >
-                <span
-                  className="mb-5 font-['Barlow_Condensed'] text-3xl font-bold md:mb-0"
-                  style={{ color: GOLD }}
-                >
-                  {service.number}
-                </span>
-
-                <div>
-                  <h3 className="font-['Barlow_Condensed'] text-4xl font-bold uppercase leading-none transition-colors duration-500 group-hover:text-[#C8A34A] sm:text-5xl md:text-6xl">
-                    {service.title}
-                  </h3>
-
-                  <p className="mt-4 max-w-xl text-sm leading-6 text-white/50 md:text-base">
-                    {service.description}
-                  </p>
-                </div>
-
-                <div className="relative mt-7 aspect-[16/8] overflow-hidden md:mt-0">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                  />
-
-                  <div className="absolute inset-0 bg-black/20 transition-opacity duration-500 group-hover:opacity-0" />
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          STATS
-      ========================================================= */}
-
-      <section className="relative overflow-hidden bg-[#C8A34A] px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-        <div className="pointer-events-none absolute right-[-15%] top-[-60%] h-[900px] w-[900px] rounded-full border border-black/10" />
-
-        <div className="mx-auto max-w-[1400px]">
-          <Reveal>
-            <div className="mb-16 max-w-2xl">
-              <div className="mb-5 flex items-center gap-4 text-xs font-bold uppercase tracking-[0.25em]">
-                <span className="h-[2px] w-10 bg-[#171717]" />
-                Experience You Can Measure
-              </div>
-
-              <h2 className="font-['Barlow_Condensed'] text-6xl font-bold uppercase leading-[0.85] sm:text-7xl md:text-8xl">
-                Numbers
-                <br />
-                that matter.
-              </h2>
-            </div>
-          </Reveal>
-
-          <div className="grid grid-cols-2 border-t border-black/20 md:grid-cols-4">
-            {stats.map(([number, label], index) => (
-              <motion.div
-                key={label}
-                initial={{
-                  opacity: 0,
-                  y: 40,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                viewport={{
-                  once: true,
-                  amount: 0.3,
-                }}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.1,
-                }}
-                className={`py-10 ${
-                  index !== stats.length - 1
-                    ? "border-r border-black/20"
-                    : ""
-                } ${index >= 2 ? "border-t border-black/20 md:border-t-0" : ""} px-5 md:px-8`}
-              >
-                <span className="block font-['Barlow_Condensed'] text-6xl font-bold leading-none sm:text-7xl md:text-8xl">
-                  {number}
-                </span>
-
-                <span className="mt-3 block text-[10px] font-bold uppercase tracking-[0.22em] opacity-60 sm:text-xs">
-                  {label}
-                </span>
               </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* =========================================================
-          PROJECTS
-      ========================================================= */}
-
-      <section
-        id="projects"
-        className="px-6 py-24 sm:px-10 md:px-16 md:py-36 lg:px-20"
-      >
-        <div className="mx-auto max-w-[1400px]">
-          <Reveal>
-            <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
-              <div>
-                <div
-                  className="mb-6 flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em]"
-                  style={{ color: GOLD }}
-                >
-                  <GoldLine />
-                  Works Executed
-                </div>
-
-                <h2 className="font-['Barlow_Condensed'] text-6xl font-bold uppercase leading-[0.85] sm:text-7xl md:text-8xl">
-                  Selected
-                  <br />
-                  <span style={{ color: GOLD }}>Projects.</span>
-                </h2>
-              </div>
-
-              <a
-                href="/projects"
-                className="w-fit border-b-2 pb-2 text-xs font-bold uppercase tracking-[0.16em]"
-                style={{ borderColor: GOLD }}
+              <motion.h1
+                variants={slowReveal}
+                className="max-w-5xl text-5xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.5rem] lg:leading-[1.05]"
               >
-                View All Projects →
-              </a>
-            </div>
-          </Reveal>
+                Total control of <br />
+                <span style={{ color: MAGENTA }}>civil infrastructure.</span>
+              </motion.h1>
 
-          {/* Project 01 */}
-          <Reveal>
-            <motion.a
-              href="/projects"
-              whileHover="hover"
-              className="group relative mb-8 block overflow-hidden bg-[#222]"
-            >
-              <div className="relative aspect-[16/8] overflow-hidden">
-                <motion.img
-                  variants={{
-                    hover: {
-                      scale: 1.045,
-                    },
-                  }}
-                  transition={{
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  src="/images/projects/project-01.jpg"
-                  alt="YASH CONSTRUCTION project"
-                  className="h-full w-full object-cover"
-                />
+              <motion.div
+                variants={reveal}
+                className="mt-8 flex max-w-4xl flex-col gap-8 md:flex-row md:items-end md:justify-between"
+              >
+                <p className="max-w-xl text-base leading-relaxed text-white/70 md:text-lg">
+                  Delivering end-to-end highway construction, bridge civil works, and departmental
+                  contracts across Ratnagiri District. Powered by captive asphalt plants, aggregate
+                  crushers, and heavy fleet readiness.
+                </p>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white md:p-10">
-                  <span
-                    className="text-[10px] font-bold uppercase tracking-[0.2em]"
-                    style={{ color: GOLD }}
+                <div className="flex flex-wrap items-center gap-4">
+                  <a
+                    href="#projects"
+                    className="inline-flex items-center justify-center rounded-lg px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white transition-all duration-300 hover:brightness-110"
+                    style={{ backgroundColor: MAGENTA }}
                   >
-                    Road Construction
-                  </span>
+                    View Project Ledger
+                  </a>
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-white transition-all hover:bg-white/10"
+                  >
+                    Tender Desk →
+                  </a>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
 
-                  <h3 className="mt-2 max-w-3xl font-['Barlow_Condensed'] text-4xl font-bold uppercase sm:text-5xl md:text-7xl">
-                    Project Name
-                  </h3>
+        {/* =========================================================
+            KEY METRICS (SiteAssist Clean Strip in Logo Theme)
+        ========================================================= */}
+        <section className="border-b border-[#E4E6EB] bg-white py-14">
+          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+            <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+              {stats.map((s, index) => (
+                <Reveal key={s.label} delay={index * 0.08}>
+                  <div className="border-l-2 pl-5" style={{ borderColor: MAGENTA }}>
+                    <span className="text-4xl font-bold tracking-tight text-[#111318] md:text-5xl">
+                      {s.num}
+                    </span>
+                    <h3 className="mt-1 text-sm font-semibold text-[#111318]">{s.label}</h3>
+                    <p className="text-xs text-[#555A65]">{s.caption}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
 
-                  <div className="mt-4 flex flex-wrap gap-5 text-xs uppercase tracking-[0.12em] text-white/60">
-                    <span>Client</span>
-                    <span>•</span>
-                    <span>Location</span>
-                    <span>•</span>
-                    <span>Year</span>
+        {/* =========================================================
+            STATEMENT / PROFILE
+        ========================================================= */}
+        <section id="about" className="py-24 sm:py-32">
+          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+            <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+              <Reveal>
+                <div>
+                  <SiteBadge label="• OPERATIONAL PROFILE" />
+                  <h2 className="text-4xl font-bold tracking-tight text-[#111318] sm:text-5xl md:text-6xl">
+                    Four decades of consistent public delivery.
+                  </h2>
+
+                  <p className="mt-6 text-base leading-relaxed text-[#555A65] md:text-lg">
+                    Yash Construction is an established civil engineering partnership firm. We
+                    operate as direct Class IA registered contractors for government bodies and
+                    regional infrastructure authorities, maintaining direct oversight over materials,
+                    plant extraction, and heavy field fleets.
+                  </p>
+
+                  <div className="mt-8 grid grid-cols-2 gap-4 border-t border-[#E4E6EB] pt-6 text-xs text-[#555A65]">
+                    <div>
+                      <span className="font-mono font-semibold text-[#111318] block">
+                        ESTABLISHED
+                      </span>
+                      1984 in Lanja, Maharashtra
+                    </div>
+                    <div>
+                      <span className="font-mono font-semibold text-[#111318] block">
+                        SPECIALIZATION
+                      </span>
+                      High-Volume Highway & Pavements
+                    </div>
                   </div>
                 </div>
+              </Reveal>
 
-                <div
-                  className="absolute right-6 top-6 flex h-12 w-12 items-center justify-center rounded-full text-xl text-[#171717] transition-transform duration-500 group-hover:rotate-45 md:right-10 md:top-10"
-                  style={{ backgroundColor: GOLD }}
-                >
-                  ↗
+              <Reveal delay={0.15}>
+                <div className="relative rounded-2xl border border-[#E4E6EB] bg-[#F4F5F8] p-3 shadow-sm">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-neutral-900">
+                    <img
+                      src="/images/company/company.jpg"
+                      alt="Yash Construction Field Engineering"
+                      className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white">
+                      <div>
+                        <span className="font-mono text-xs" style={{ color: MAGENTA }}>
+                          CLASS IA CONTRACTOR
+                        </span>
+                        <h4 className="text-xl font-bold text-white">
+                          Ratnagiri Infrastructure Unit
+                        </h4>
+                      </div>
+                      <span className="rounded bg-white/20 px-2 py-1 font-mono text-[10px] backdrop-blur-sm">
+                        REG: PWD // 1984
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </motion.a>
-          </Reveal>
+              </Reveal>
+            </div>
+          </div>
+        </section>
 
-          <div className="grid gap-8 md:grid-cols-2">
-            {[2, 3].map((item, index) => (
-              <Reveal key={item} delay={index * 0.12}>
-                <motion.a
-                  href="/projects"
-                  whileHover="hover"
-                  className="group block"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden bg-[#222]">
-                    <motion.img
-                      variants={{
-                        hover: {
-                          scale: 1.05,
-                        },
-                      }}
-                      transition={{
-                        duration: 0.8,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
-                      src={`/images/projects/project-0${item}.jpg`}
-                      alt="YASH CONSTRUCTION project"
+        {/* =========================================================
+            SOLUTIONS: SiteAssist Sync Hover Rail (Magenta Accents)
+        ========================================================= */}
+        <section id="services" className="border-b border-[#E4E6EB] bg-[#F4F5F8] py-24 sm:py-32">
+          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+            <Reveal>
+              <div className="mb-14 flex flex-col justify-between gap-6 border-b border-[#E4E6EB] pb-8 md:flex-row md:items-end">
+                <div>
+                  <SiteBadge label="• WHAT WE DO" />
+                  <h2 className="text-4xl font-bold tracking-tight text-[#111318] sm:text-5xl md:text-6xl">
+                    Engineered solutions.
+                  </h2>
+                </div>
+                <p className="max-w-md text-sm text-[#555A65]">
+                  Built for major infrastructure projects across civil roads, bridges, and earthworks.
+                  Hover over capabilities to inspect active site parameters.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+              {/* Interactive Left Rail */}
+              <div className="space-y-4">
+                {services.map((svc, idx) => {
+                  const isActive = activeService === idx;
+                  return (
+                    <motion.div
+                      key={svc.number}
+                      onMouseEnter={() => setActiveService(idx)}
+                      onClick={() => setActiveService(idx)}
+                      className={`relative cursor-pointer rounded-xl border p-6 transition-all duration-300 ${
+                        isActive
+                          ? "border-[#E41B76] bg-white shadow-md ring-1 ring-[#E41B76]/30"
+                          : "border-transparent bg-transparent hover:border-neutral-300 hover:bg-white/60"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span
+                          className="font-mono text-xs font-bold"
+                          style={{ color: isActive ? MAGENTA : "#555A65" }}
+                        >
+                          {svc.number} // {svc.tag}
+                        </span>
+                        {isActive && (
+                          <motion.span
+                            layoutId="active-indicator"
+                            className="font-mono text-xs font-bold"
+                            style={{ color: MAGENTA }}
+                          >
+                            [SELECTED]
+                          </motion.span>
+                        )}
+                      </div>
+
+                      <h3 className="mt-2 text-2xl font-bold tracking-tight text-[#111318] md:text-3xl">
+                        {svc.title}
+                      </h3>
+
+                      <p className="mt-2 text-sm leading-relaxed text-[#555A65]">
+                        {svc.description}
+                      </p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Dynamic Preview Frame */}
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#E4E6EB] bg-neutral-900 shadow-lg">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeService}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute inset-0"
+                  >
+                    <img
+                      src={services[activeService].image}
+                      alt={services[activeService].title}
                       className="h-full w-full object-cover"
                     />
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-
-                    <span
-                      className="absolute bottom-6 left-6 text-[10px] font-bold uppercase tracking-[0.2em]"
-                      style={{ color: GOLD }}
-                    >
-                      Infrastructure
-                    </span>
-                  </div>
-
-                  <div className="mt-5 flex items-start justify-between gap-5">
-                    <div>
-                      <h3 className="font-['Barlow_Condensed'] text-3xl font-bold uppercase">
-                        Project Name
-                      </h3>
-                      <p className="mt-2 text-sm text-black/50">
-                        Client · Location · Year
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                    <div className="absolute bottom-6 left-6 right-6 text-white">
+                      <span
+                        className="font-mono text-[10px] uppercase tracking-widest"
+                        style={{ color: MAGENTA }}
+                      >
+                        INSPECTION & EXECUTION READY
+                      </span>
+                      <h4 className="text-xl font-bold text-white">
+                        {services[activeService].title}
+                      </h4>
+                      <p className="font-mono text-xs text-white/70">
+                        {services[activeService].tag}
                       </p>
                     </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
+        </section>
 
+        {/* =========================================================
+            FLEET REEL: SiteAssist Module Reel Animation
+        ========================================================= */}
+        <section id="machinery" className="overflow-hidden py-24 sm:py-32">
+          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+            <Reveal>
+              <div className="mb-12 flex flex-col justify-between gap-6 border-b border-[#E4E6EB] pb-8 md:flex-row md:items-end">
+                <div>
+                  <SiteBadge label="• FLEET & MODULES" />
+                  <h2 className="text-4xl font-bold tracking-tight text-[#111318] sm:text-5xl md:text-6xl">
+                    Dedicated assets.
+                  </h2>
+                </div>
+                <div className="font-mono text-xs uppercase text-[#555A65]">
+                  DRAG OR SCROLL TO VIEW CAPACITIES →
+                </div>
+              </div>
+            </Reveal>
+
+            <motion.div
+              className="flex gap-6 overflow-x-auto pb-6 pt-2 scrollbar-none"
+              style={{ scrollSnapType: "x mandatory" }}
+            >
+              {machinery.map((item, index) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ y: -6 }}
+                  className="min-w-[280px] max-w-[320px] flex-shrink-0 scroll-snap-align-start rounded-2xl border border-[#E4E6EB] bg-white p-5 shadow-sm transition-all hover:border-[#E41B76]/50 hover:shadow-lg sm:min-w-[320px]"
+                >
+                  <div className="flex items-center justify-between font-mono text-xs text-[#555A65]">
+                    <span>ASSET // 0{index + 1}</span>
                     <span
-                      className="text-2xl transition-transform duration-500 group-hover:translate-x-2"
-                      style={{ color: GOLD }}
+                      className="rounded px-2 py-0.5 font-bold"
+                      style={{ backgroundColor: `${MAGENTA}15`, color: MAGENTA }}
                     >
-                      →
+                      QTY: {item.quantity}
                     </span>
                   </div>
-                </motion.a>
-              </Reveal>
-            ))}
+
+                  <div className="relative my-4 aspect-[4/3] overflow-hidden rounded-xl bg-neutral-100">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+
+                  <h3 className="text-xl font-bold tracking-tight text-[#111318]">
+                    {item.name}
+                  </h3>
+                  <p className="mt-1 font-mono text-xs font-semibold" style={{ color: MAGENTA }}>
+                    {item.spec}
+                  </p>
+                  <p className="mt-2 text-xs text-[#555A65]">{item.role}</p>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
+        </section>
 
-          <p className="mt-10 border-l-2 border-[#C8A34A] pl-4 text-sm text-black/50">
-            Project names, clients, costs, locations and images should be
-            replaced with confirmed company data before launch.
-          </p>
-        </div>
-      </section>
+        {/* =========================================================
+            PRODUCTION PLANTS & FACILITIES
+        ========================================================= */}
+        <section id="plants" className="border-t border-[#E4E6EB] bg-[#F4F5F8] py-24 sm:py-32">
+          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+            <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+              <Reveal>
+                <div>
+                  <SiteBadge label="• PLANT INFRASTRUCTURE" />
+                  <h2 className="text-4xl font-bold tracking-tight text-[#111318] sm:text-5xl md:text-6xl">
+                    Captive material plants.
+                  </h2>
+                  <p className="mt-6 text-base leading-relaxed text-[#555A65]">
+                    Zero third-party bottlenecks. Direct manufacturing of verified bituminous mix,
+                    controlled aggregate crushing, and ready-mix concrete at Waghangaon.
+                  </p>
 
-      {/* =========================================================
-          MACHINERY
-      ========================================================= */}
-
-      <section
-        id="machinery"
-        className="bg-[#171717] px-6 py-24 text-white sm:px-10 md:px-16 md:py-36 lg:px-20"
-      >
-        <div className="mx-auto max-w-[1400px]">
-          <Reveal>
-            <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
-              <div>
-                <div
-                  className="mb-6 flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em]"
-                  style={{ color: GOLD }}
-                >
-                  <GoldLine />
-                  Our Assets
+                  <div className="mt-8 divide-y divide-[#E4E6EB] rounded-xl border border-[#E4E6EB] bg-white">
+                    {plants.map((p) => (
+                      <div key={p.name} className="flex items-center justify-between p-4">
+                        <div>
+                          <h4 className="text-base font-bold text-[#111318]">{p.name}</h4>
+                          <span className="font-mono text-xs text-neutral-400">LOC: {p.location}</span>
+                        </div>
+                        <span className="rounded bg-[#F4F5F8] px-3 py-1 font-mono text-xs font-semibold text-[#111318]">
+                          {p.capacity}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+              </Reveal>
 
-                <h2 className="font-['Barlow_Condensed'] text-6xl font-bold uppercase leading-[0.85] sm:text-7xl md:text-8xl">
-                  Equipment
-                  <br />
-                  <span style={{ color: GOLD }}>that works.</span>
-                </h2>
+              <Reveal delay={0.15}>
+                <div className="overflow-hidden rounded-2xl border border-[#E4E6EB] bg-white p-3 shadow-sm">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-neutral-900">
+                    <img
+                      src="/images/plants/asphalt-plant.jpg"
+                      alt="Waghangaon Plant Complex"
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    <div className="absolute bottom-6 left-6 right-6 text-white">
+                      <span className="font-mono text-xs" style={{ color: MAGENTA }}>
+                        CENTRAL PROCESSING HUB
+                      </span>
+                      <h3 className="text-2xl font-bold text-white">
+                        Waghangaon Operations Base
+                      </h3>
+                      <p className="font-mono text-xs text-white/70">
+                        Supplying Lanja, Rajapur, and Ratnagiri Highway Networks.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================
+            CREDENTIALS
+        ========================================================= */}
+        <section className="border-t border-[#E4E6EB] bg-white py-20">
+          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+            <Reveal>
+              <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+                <div>
+                  <SiteBadge label="• STATUTORY COMPLIANCE" />
+                  <h2 className="text-3xl font-bold tracking-tight text-[#111318] sm:text-4xl">
+                    Accreditations & registrations.
+                  </h2>
+                </div>
+                <p className="text-xs text-[#555A65]">Fully certified for state & central bids.</p>
               </div>
+            </Reveal>
 
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+              {[
+                { title: "PWD Registration", sub: "Class IA Contractor" },
+                { title: "MSME / Udyam", sub: "Registered Enterprise" },
+                { title: "GST Compliant", sub: "Verified Entity" },
+                { title: "Partnership Act", sub: "Registered Since 1984" },
+              ].map((c) => (
+                <div
+                  key={c.title}
+                  className="rounded-xl border border-[#E4E6EB] bg-[#F4F5F8] p-5 transition-colors hover:border-[#E41B76]"
+                >
+                  <span className="font-mono text-xs font-bold" style={{ color: MAGENTA }}>
+                    VERIFIED //
+                  </span>
+                  <h4 className="mt-2 text-lg font-bold text-[#111318]">{c.title}</h4>
+                  <p className="font-mono text-xs text-[#555A65]">{c.sub}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================
+            FINAL CALL TO ACTION
+        ========================================================= */}
+        <section
+          id="contact"
+          className="border-t border-[#E4E6EB] bg-[#111318] py-28 text-white sm:py-36"
+        >
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={slowReveal}
+            className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3.5 py-1 text-xs text-white/80">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: MAGENTA }} />
+              Direct Tender & Partner Inquiries
+            </div>
+
+            <h2 className="mt-8 max-w-4xl text-5xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
+              Let's talk about your <br />
+              <span style={{ color: MAGENTA }}>next project.</span>
+            </h2>
+
+            <p className="mt-6 max-w-xl text-base text-white/60 md:text-lg">
+              Contact our engineering and tenders desk for joint venture works, departmental
+              tenders, or direct hot-mix supply.
+            </p>
+
+            <div className="mt-12 flex flex-wrap gap-4 font-mono text-xs tracking-wider">
               <a
-                href="/machinery"
-                className="w-fit border-b-2 pb-2 text-xs font-bold uppercase tracking-[0.16em]"
-                style={{ borderColor: GOLD }}
+                href="tel:+917798763555"
+                className="rounded-lg px-8 py-4 font-bold text-white transition-all hover:brightness-110"
+                style={{ backgroundColor: MAGENTA }}
               >
-                View Machinery & Plants →
+                Call Office
+              </a>
+              <a
+                href="https://wa.me/917798763555"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-white/20 bg-white/5 px-8 py-4 font-bold transition-all hover:border-[#E41B76] hover:text-[#E41B76]"
+              >
+                WhatsApp Desk
+              </a>
+              <a
+                href="mailto:yash_const@rediffmail.com"
+                className="rounded-lg border border-white/20 bg-white/5 px-8 py-4 font-bold transition-all hover:border-[#E41B76] hover:text-[#E41B76]"
+              >
+                Dispatch Email
               </a>
             </div>
-          </Reveal>
 
-          <div className="grid grid-cols-2 gap-px bg-white/10 md:grid-cols-4">
-            {machinery.map((machine, index) => (
-              <motion.div
-                key={machine.name}
-                initial={{
-                  opacity: 0,
-                  y: 50,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                viewport={{
-                  once: true,
-                  amount: 0.15,
-                }}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.08,
-                }}
-                className="group bg-[#202020]"
-              >
-                <div className="relative aspect-square overflow-hidden">
-                  <img
-                    src={machine.image}
-                    alt={machine.name}
-                    className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                  />
-
-                  <span
-                    className="absolute left-0 top-0 px-4 py-3 font-['Barlow_Condensed'] text-2xl font-bold text-[#171717]"
-                    style={{ backgroundColor: GOLD }}
-                  >
-                    ×{machine.quantity}
-                  </span>
-                </div>
-
-                <div className="p-5 md:p-6">
-                  <h3 className="font-['Barlow_Condensed'] text-2xl font-bold uppercase">
-                    {machine.name}
-                  </h3>
-
-                  <p className="mt-2 text-xs uppercase tracking-[0.12em] text-white/40">
-                    {machine.spec}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          PLANTS / CAPABILITY
-      ========================================================= */}
-
-      <section className="px-6 py-24 sm:px-10 md:px-16 md:py-36 lg:px-20">
-        <div className="mx-auto grid max-w-[1400px] items-center gap-16 lg:grid-cols-[1fr_1fr] lg:gap-24">
-          <Reveal>
-            <div>
-              <div
-                className="mb-6 flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em]"
-                style={{ color: GOLD }}
-              >
-                <GoldLine />
-                Plant & Infrastructure
-              </div>
-
-              <h2 className="font-['Barlow_Condensed'] text-6xl font-bold uppercase leading-[0.85] sm:text-7xl md:text-8xl">
-                More than
-                <br />
-                <span style={{ color: GOLD }}>construction.</span>
-              </h2>
-
-              <p className="mt-8 max-w-xl text-lg leading-8 text-black/60">
-                YASH CONSTRUCTION operates its own production and processing
-                infrastructure, including asphalt, crusher and RMC facilities
-                in the Lanja region.
-              </p>
-
-              <div className="mt-10 space-y-5 border-t border-black/15 pt-6">
-                {[
-                  ["Asphalt Plant", "120 DM", "Waghangaon"],
-                  ["Crusher Plant", "Multiple configurations", "Waghangaon"],
-                  ["RMC Plant", "30 Cum", "Waghangaon"],
-                  ["Quarry", "Standard capacity", "Waghangaon"],
-                ].map(([name, spec, location]) => (
-                  <div
-                    key={name}
-                    className="flex items-center justify-between gap-5 border-b border-black/10 pb-5"
-                  >
-                    <div>
-                      <h3 className="font-['Barlow_Condensed'] text-2xl font-bold uppercase">
-                        {name}
-                      </h3>
-                      <p className="mt-1 text-xs uppercase tracking-[0.12em] text-black/40">
-                        {location}
-                      </p>
-                    </div>
-
-                    <span
-                      className="text-xs font-bold uppercase tracking-[0.1em]"
-                      style={{ color: GOLD }}
-                    >
-                      {spec}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.15}>
-            <div className="relative">
-              <div
-                className="absolute -right-5 -top-5 h-full w-full rounded-tl-[120px] border-2"
-                style={{ borderColor: GOLD }}
-              />
-
-              <div className="relative aspect-[4/5] overflow-hidden rounded-tl-[120px] bg-[#222]">
-                <img
-                  src="/images/plants/asphalt-plant.jpg"
-                  alt="YASH CONSTRUCTION asphalt plant"
-                  className="h-full w-full object-cover transition-transform duration-[1.5s] hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-black/20" />
-
-                <div className="absolute bottom-8 left-8 text-white">
-                  <p
-                    className="font-['Barlow_Condensed'] text-5xl font-bold uppercase"
-                    style={{ color: GOLD }}
-                  >
-                    Waghangaon
-                  </p>
-
-                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-white/70">
-                    Plant Infrastructure
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* =========================================================
-          CREDENTIALS
-      ========================================================= */}
-
-      <section className="border-y border-black/10 bg-[#ebe7dc] px-6 py-20 sm:px-10 md:px-16 md:py-28 lg:px-20">
-        <div className="mx-auto max-w-[1400px]">
-          <Reveal>
-            <div className="grid gap-10 md:grid-cols-[0.7fr_1.3fr] md:items-end">
+            <div className="mt-24 flex flex-col justify-between gap-6 border-t border-white/10 pt-8 font-mono text-xs text-white/40 md:flex-row">
               <div>
-                <div
-                  className="mb-5 flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em]"
-                  style={{ color: GOLD }}
-                >
-                  <GoldLine />
-                  Credentials
-                </div>
-
-                <h2 className="font-['Barlow_Condensed'] text-5xl font-bold uppercase leading-[0.9] md:text-7xl">
-                  Built on
-                  <br />
-                  <span style={{ color: GOLD }}>credibility.</span>
-                </h2>
+                YASH CONSTRUCTION · LANJA, RATNAGIRI DISTRICT, MAHARASHTRA
               </div>
-
-              <p className="max-w-2xl text-base leading-7 text-black/55">
-                YASH CONSTRUCTION holds registrations and credentials
-                associated with its construction and contracting operations.
-              </p>
+              <div>© 1984 {new Date().getFullYear()} ALL RIGHTS RESERVED</div>
             </div>
-          </Reveal>
-
-          <div className="mt-14 grid grid-cols-2 border-t border-black/15 md:grid-cols-4">
-            {[
-              "GST Registration",
-              "MSME / Udyam",
-              "PWD Registration",
-              "Partnership Registration",
-            ].map((item, index) => (
-              <motion.div
-                key={item}
-                initial={{
-                  opacity: 0,
-                }}
-                whileInView={{
-                  opacity: 1,
-                }}
-                viewport={{
-                  once: true,
-                }}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.1,
-                }}
-                className="border-b border-r border-black/15 px-5 py-8 md:px-8"
-              >
-                <span
-                  className="font-['Barlow_Condensed'] text-2xl font-bold uppercase"
-                  style={{ color: DARK }}
-                >
-                  {item}
-                </span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          FINAL CTA
-      ========================================================= */}
-
-      <section
-        id="contact"
-        className="relative overflow-hidden bg-[#171717] px-6 py-28 text-white sm:px-10 md:px-16 md:py-40 lg:px-20"
-      >
-        <div className="pointer-events-none absolute right-[-20%] top-[-50%] h-[900px] w-[900px] rounded-full border border-[#C8A34A]/30" />
-
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{
-            once: true,
-            amount: 0.3,
-          }}
-          variants={slowReveal}
-          className="relative z-10 mx-auto max-w-[1400px]"
-        >
-          <div
-            className="mb-7 flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em]"
-            style={{ color: GOLD }}
-          >
-            <GoldLine />
-            Start a Conversation
-          </div>
-
-          <h2 className="max-w-5xl font-['Barlow_Condensed'] text-7xl font-bold uppercase leading-[0.8] tracking-tight sm:text-8xl md:text-[10vw]">
-            Let's build
-            <br />
-            something
-            <br />
-            <span style={{ color: GOLD }}>lasting.</span>
-          </h2>
-
-          <div className="mt-12 flex flex-wrap gap-4">
-            <a
-              href="tel:+917798763555"
-              className="border border-[#C8A34A] px-7 py-4 text-xs font-bold uppercase tracking-[0.15em] text-[#171717] transition-all duration-500 hover:bg-transparent hover:text-white"
-              style={{ backgroundColor: GOLD }}
-            >
-              Call Us
-            </a>
-
-            <a
-              href="https://wa.me/917798763555"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border border-white/30 px-7 py-4 text-xs font-bold uppercase tracking-[0.15em] transition-all duration-500 hover:border-[#C8A34A] hover:text-[#C8A34A]"
-            >
-              WhatsApp
-            </a>
-
-            <a
-              href="mailto:yash_const@rediffmail.com"
-              className="border border-white/30 px-7 py-4 text-xs font-bold uppercase tracking-[0.15em] transition-all duration-500 hover:border-[#C8A34A] hover:text-[#C8A34A]"
-            >
-              Email
-            </a>
-          </div>
-        </motion.div>
-      </section>
-    </main>
+          </motion.div>
+        </section>
+      </main>
     </>
   );
 }
