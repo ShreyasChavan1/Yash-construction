@@ -1,83 +1,50 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
-import Navbar from "../components/Navbar";
+import { motion, type Variants } from "motion/react";
+import { company } from "../lib/company";
+import { governmentContracts } from "../lib/services";
 
 const MAGENTA = "#E41B76";
 
-const registrations = [
-  {
-    number: "01",
-    title: "GST Registration",
-    label: "Tax Registration",
-    value: "27AAAFY3458L1ZP",
-    description:
-      "Goods and Services Tax registration of YASH CONSTRUCTION.",
-  },
-  {
-    number: "02",
-    title: "MSME / Udyam",
-    label: "Enterprise Registration",
-    value: "MH-28-0023022",
-    description:
-      "MSME / Udyam registration associated with YASH CONSTRUCTION.",
-  },
-  {
-    number: "03",
-    title: "PWD Registration",
-    label: "Government Contractor",
-    value: "TQOJ0ANI3YH8",
-    description:
-      "Public Works Department registration of YASH CONSTRUCTION.",
-  },
-  {
-    number: "04",
-    title: "Partnership Registration",
-    label: "Firm Registration",
-    value: "MA19454",
-    description:
-      "Registered partnership firm identification for YASH CONSTRUCTION.",
-  },
+// Shared pill buttons. On dark sections the primary hover turns white (a #111318 hover would vanish into the background).
+const btnBase =
+  "inline-flex items-center justify-center gap-3 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-wide transition";
+const btnPrimary = `${btnBase} bg-[#E41B76] text-white hover:bg-white hover:text-[#111318]`;
+const btnOutline = `${btnBase} border border-white/25 text-white hover:border-[#E41B76] hover:bg-[#E41B76]`;
+
+const registrations = company.registrations;
+
+const companyDetails: [string, string][] = [
+  ["Company", company.name],
+  ["Established", String(company.established)],
+  ["Firm Type", company.type],
+  ["Experience", `${company.experienceYears} Years`],
+  ["Area of Operation", company.areasOfOperationText],
+  ["PAN", company.pan],
 ];
 
-const companyDetails = [
-  ["Company", "YASH CONSTRUCTION"],
-  ["Established", "1984"],
-  ["Firm Type", "Partnership Firm"],
-  ["Experience", "42 Years"],
-  ["Area of Operation", "Lanja Taluka, Rajapur Taluka & Ratnagiri District"],
-  ["PAN", "AAAFY3458L"],
-];
-
-const governmentContracts = [
-  "PWD",
-  "PMGSY",
-  "MIDC",
-  "Nagarpanchayat",
-  "Zilla Parishad",
-  "MMB",
-];
-
-const fadeUp = {
-  hidden: {
-    opacity: 0,
-    y: 35,
-  },
+const reveal: Variants = {
+  hidden: { opacity: 0, y: 45 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.75,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
+    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
+const slowReveal: Variants = {
+  hidden: { opacity: 0, y: 65 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
 export default function CredentialsPage() {
   return (
     <>
-    {/* <Navbar/> */}
     <main className="bg-[#111318] text-white">
 
       {/* HERO */}
@@ -94,7 +61,12 @@ export default function CredentialsPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-[#111318]" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-10 pt-32 pb-20">
+        <motion.div
+    className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-32 pb-20 lg:px-10 lg:pt-40"
+    initial="hidden"
+    animate="visible"
+    variants={slowReveal}
+  >
 
           <p
             className="text-sm tracking-[0.35em] uppercase mb-5"
@@ -103,7 +75,7 @@ export default function CredentialsPage() {
             Company Credentials
           </p>
 
-          <h1 className="text-[clamp(3.8rem,10vw,9rem)] leading-[0.8] font-black uppercase tracking-[-0.06em]">
+          <h1 className="text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-8xl">
             CREDENTIALS
           </h1>
 
@@ -112,13 +84,13 @@ export default function CredentialsPage() {
             works across Lanja, Rajapur and Ratnagiri.
           </p>
 
-        </div>
+        </motion.div>
       </section>
 
       {/* COMPANY PROFILE */}
-      <section className="bg-[#F5F5F3] text-[#111318] py-24 md:py-32">
+      <section className="bg-[#F5F5F3] text-[#111318] py-20 lg:py-28">
 
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
           <div className="grid lg:grid-cols-12 gap-12">
 
@@ -131,7 +103,7 @@ export default function CredentialsPage() {
                 01 / Company
               </p>
 
-              <h2 className="mt-5 text-4xl md:text-6xl font-black uppercase leading-[0.9] tracking-tight">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl mt-5">
                 COMPANY
                 <br />
                 PROFILE
@@ -169,9 +141,9 @@ export default function CredentialsPage() {
       </section>
 
       {/* REGISTRATIONS */}
-      <section className="bg-[#111318] py-24 md:py-32">
+      <section className="bg-[#111318] py-20 lg:py-28">
 
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
           <div className="mb-16">
 
@@ -182,7 +154,7 @@ export default function CredentialsPage() {
               02 / Registrations
             </p>
 
-            <h2 className="text-4xl md:text-7xl font-black uppercase leading-[0.9] tracking-tight">
+            <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
               REGISTERED
               <br />
               &amp; RECOGNIZED
@@ -198,7 +170,7 @@ export default function CredentialsPage() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
-                variants={fadeUp}
+                variants={reveal}
                 className="bg-[#111318] p-8 md:p-10"
               >
 
@@ -217,7 +189,7 @@ export default function CredentialsPage() {
 
                 </div>
 
-                <h3 className="mt-12 text-3xl md:text-4xl font-black uppercase tracking-tight">
+                <h3 className="text-xl font-black uppercase sm:text-2xl mt-12">
                   {registration.title}
                 </h3>
 
@@ -250,9 +222,9 @@ export default function CredentialsPage() {
       </section>
 
       {/* GOVERNMENT WORK */}
-      <section className="bg-[#F5F5F3] text-[#111318] py-24 md:py-32">
+      <section className="bg-[#F5F5F3] text-[#111318] py-20 lg:py-28">
 
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
           <div className="grid lg:grid-cols-12 gap-12 items-start">
 
@@ -265,7 +237,7 @@ export default function CredentialsPage() {
                 03 / Government Contracts
               </p>
 
-              <h2 className="mt-5 text-4xl md:text-6xl font-black uppercase leading-[0.9] tracking-tight">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl mt-5">
                 GOVERNMENT
                 <br />
                 WORK
@@ -311,9 +283,9 @@ export default function CredentialsPage() {
       </section>
 
       {/* DOCUMENTS */}
-      <section className="bg-[#111318] py-24 md:py-32">
+      <section className="bg-[#111318] py-20 lg:py-28">
 
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
           <div className="grid lg:grid-cols-12 gap-12">
 
@@ -326,7 +298,7 @@ export default function CredentialsPage() {
                 04 / Documents
               </p>
 
-              <h2 className="text-4xl md:text-6xl font-black uppercase leading-[0.9]">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                 OFFICIAL
                 <br />
                 DOCUMENTS
@@ -388,14 +360,14 @@ export default function CredentialsPage() {
       </section>
 
       {/* CTA */}
-      <section className="relative bg-[#111318] border-t border-white/10 py-28 overflow-hidden">
+      <section className="relative bg-[#111318] border-t border-white/10 py-20 lg:py-28 overflow-hidden">
 
         <div
           className="absolute -right-40 -bottom-40 h-[500px] w-[500px] rounded-full blur-3xl opacity-20"
           style={{ backgroundColor: MAGENTA }}
         />
 
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10">
+        <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
 
           <p
             className="text-sm tracking-[0.3em] uppercase mb-5"
@@ -404,7 +376,7 @@ export default function CredentialsPage() {
             Continue Exploring
           </p>
 
-          <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tight leading-[0.85] max-w-4xl">
+          <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl max-w-4xl">
             PROOF
             <br />
             IN PRACTICE.
@@ -414,16 +386,16 @@ export default function CredentialsPage() {
 
             <Link
               href="/projects"
-              className="inline-flex items-center justify-center px-7 py-4 bg-white text-black font-semibold hover:bg-white/90 transition"
+              className={btnPrimary}
             >
-              View Projects
+              View Projects →
             </Link>
 
             <Link
               href="/machinery"
-              className="inline-flex items-center justify-center px-7 py-4 border border-white/25 text-white font-semibold hover:border-white transition"
+              className={btnOutline}
             >
-              View Machinery
+              View Machinery →
             </Link>
 
           </div>

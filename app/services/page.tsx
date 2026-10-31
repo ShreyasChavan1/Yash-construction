@@ -4,10 +4,18 @@ import {
   motion,
   type Variants,
 } from "motion/react";
+import { company } from "../lib/company";
+import { services as serviceGroups, governmentContracts } from "../lib/services";
+import { plants as plantsData, getPlantSpecification } from "../lib/plants";
 
-import Navbar from "../components/Navbar";
 
 const MAGENTA = "#E41B76";
+
+// Shared pill buttons. On dark sections the primary hover turns white (a #111318 hover would vanish into the background).
+const btnBase =
+  "inline-flex items-center justify-center gap-3 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-wide transition";
+const btnPrimary = `${btnBase} bg-[#E41B76] text-white hover:bg-white hover:text-[#111318]`;
+const btnOutline = `${btnBase} border border-white/25 text-white hover:border-[#E41B76] hover:bg-[#E41B76]`;
 const DARK = "#111318";
 const MUTED = "#555A65";
 const BORDER = "#E4E6EB";
@@ -85,112 +93,9 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-const serviceGroups = [
-  {
-    number: "01",
-    title: "Road Construction",
-    description:
-      "Construction of road infrastructure using bitumen and concrete construction methods.",
-    items: [
-      "Bitumen Road",
-      "Concrete Road",
-    ],
-  },
-  {
-    number: "02",
-    title: "Building Construction",
-    description:
-      "Construction capabilities covering residential, commercial and related building works.",
-    items: [
-      "Residential Buildings",
-      "Commercial Buildings",
-    ],
-  },
-  {
-    number: "03",
-    title: "Industrial Construction",
-    description:
-      "Construction and development of industrial structures and supporting facilities.",
-    items: [
-      "Factory Sheds",
-    ],
-  },
-  {
-    number: "04",
-    title: "Earthwork & Excavation",
-    description:
-      "Earthwork and excavation operations supporting infrastructure and land development projects.",
-    items: [
-      "Earthwork",
-      "Excavation",
-      "Land Development",
-    ],
-  },
-  {
-    number: "05",
-    title: "Asphalt & Bitumen",
-    description:
-      "Asphalt production capabilities supporting road construction and surfacing requirements.",
-    items: [
-      "Carpet",
-      "BM",
-      "BC",
-    ],
-  },
-  {
-    number: "06",
-    title: "RMC & Aggregate",
-    description:
-      "Production and processing infrastructure for concrete and construction aggregates.",
-    items: [
-      "RMC - All Grades of Concrete",
-      "Crushed Aggregate Material",
-      "Wash Sand",
-    ],
-  },
-  {
-    number: "07",
-    title: "Bridge Construction",
-    description:
-      "Construction of minor bridges across varying spans as part of civil infrastructure works.",
-    items: [
-      "Minor Bridges",
-      "All Span Requirements",
-    ],
-  },
-  {
-    number: "08",
-    title: "Drainage Work",
-    description:
-      "Drainage and associated civil works supporting road and infrastructure projects.",
-    items: [
-      "Drainage Works",
-    ],
-  },
-  {
-    number: "09",
-    title: "Warehouse Construction",
-    description:
-      "Construction of warehouse and supporting industrial storage structures.",
-    items: [
-      "Warehouse Construction",
-    ],
-  },
-];
-
-const governmentContracts = [
-  "PWD",
-  "PMGSY",
-  "MIDC",
-  "Nagarpanchayat",
-  "Zillah Parishad",
-  "MMB",
-];
-
 export default function ServicesPage() {
   return (
     <>
-      {/* <Navbar /> */}
 
       <main
         className="overflow-hidden bg-white text-[#111318]"
@@ -199,7 +104,7 @@ export default function ServicesPage() {
         {/* =====================================================
             HERO
         ===================================================== */}
-        <section className="relative overflow-hidden bg-[#111318] pt-20 text-white">
+        <section className="relative overflow-hidden bg-[#111318] text-white">
           <div className="absolute inset-0 opacity-[0.07]">
             <div className="absolute left-[18%] top-0 h-full w-px bg-white" />
             <div className="absolute left-[50%] top-0 h-full w-px bg-white" />
@@ -208,7 +113,7 @@ export default function ServicesPage() {
 
           <div className="absolute right-[-20%] top-[-40%] h-[800px] w-[800px] rounded-full border border-white/10" />
 
-          <div className="relative mx-auto flex min-h-[70svh] max-w-[1500px] flex-col justify-end px-6 pb-16 sm:px-10 md:px-16 lg:px-20">
+          <div className="relative mx-auto flex min-h-[70svh] max-w-7xl flex-col justify-end px-6 pb-16 pt-32 lg:px-10 lg:pt-40">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -216,7 +121,7 @@ export default function ServicesPage() {
             >
               <SectionLabel>Our Capabilities</SectionLabel>
 
-              <h1 className="max-w-6xl text-6xl font-bold uppercase leading-[0.87] tracking-tight sm:text-7xl md:text-8xl lg:text-[9rem]">
+              <h1 className="text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-8xl max-w-6xl">
                 Built for
                 <br />
                 <span style={{ color: MAGENTA }}>
@@ -236,13 +141,13 @@ export default function ServicesPage() {
         {/* =====================================================
             INTRO
         ===================================================== */}
-        <section className="px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto grid max-w-[1400px] gap-14 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
+        <section className="py-20 lg:py-28">
+          <div className="mx-auto grid max-w-7xl px-6 lg:px-10 gap-14 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
             <Reveal>
               <div>
                 <SectionLabel>What We Do</SectionLabel>
 
-                <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                   Construction
                   <br />
                   from the
@@ -276,13 +181,13 @@ export default function ServicesPage() {
         {/* =====================================================
             SERVICE LIST
         ===================================================== */}
-        <section className="bg-[#111318] px-6 py-24 text-white sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="bg-[#111318] py-20 text-white lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="mb-16">
                 <SectionLabel>Services</SectionLabel>
 
-                <h2 className="max-w-4xl text-5xl font-bold uppercase leading-[0.88] sm:text-6xl md:text-8xl">
+                <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl max-w-4xl">
                   What we
                   <br />
                   <span style={{ color: MAGENTA }}>
@@ -327,7 +232,7 @@ export default function ServicesPage() {
 
                   {/* TITLE + DESCRIPTION */}
                   <div>
-                    <h3 className="text-3xl font-bold uppercase leading-none tracking-tight transition-colors duration-300 group-hover:text-[#E41B76] sm:text-4xl md:text-5xl">
+                    <h3 className="text-xl font-black uppercase sm:text-2xl transition-colors duration-300 group-hover:text-[#E41B76]">
                       {service.title}
                     </h3>
 
@@ -366,14 +271,14 @@ export default function ServicesPage() {
         {/* =====================================================
             PRODUCTION CAPABILITIES
         ===================================================== */}
-        <section className="px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-end">
                 <div>
                   <SectionLabel>Production Capability</SectionLabel>
 
-                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                     Supporting
                     <br />
                     <span style={{ color: MAGENTA }}>
@@ -391,32 +296,13 @@ export default function ServicesPage() {
             </Reveal>
 
             <div className="mt-16 grid gap-px bg-[#E4E6EB] md:grid-cols-2">
-              {[
-                {
-                  title: "Asphalt Plant",
-                  spec: "120 DM",
-                  description:
-                    "Production of asphalt materials including Carpet, BM and BC.",
-                },
-                {
-                  title: "Crusher Plant",
-                  spec: "Multiple Configurations",
-                  description:
-                    "Crushed aggregate material and wash sand production.",
-                },
-                {
-                  title: "RMC Plant",
-                  spec: "30 Cum",
-                  description:
-                    "Ready-mix concrete production across all grades of concrete.",
-                },
-                {
-                  title: "Quarry",
-                  spec: "Waghangaon",
-                  description:
-                    "Quarry operations supporting construction material requirements.",
-                },
-              ].map((plant, index) => (
+              {plantsData
+                .map((pl) => ({
+                  title: pl.name,
+                  spec: pl.specifications ? "Multiple Configurations" : getPlantSpecification(pl),
+                  description: pl.description,
+                }))
+                .map((plant, index) => (
                 <motion.div
                   key={plant.title}
                   initial={{
@@ -454,7 +340,7 @@ export default function ServicesPage() {
                     </span>
                   </div>
 
-                  <h3 className="mt-14 text-3xl font-bold uppercase sm:text-4xl">
+                  <h3 className="text-xl font-black uppercase sm:text-2xl mt-14">
                     {plant.title}
                   </h3>
 
@@ -475,14 +361,14 @@ export default function ServicesPage() {
         {/* =====================================================
             GOVERNMENT CONTRACTS
         ===================================================== */}
-        <section className="bg-[#F7F7F8] px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="bg-[#F7F7F8] py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="grid gap-10 md:grid-cols-[0.75fr_1.25fr]">
                 <div>
                   <SectionLabel>Government Contracts</SectionLabel>
 
-                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                     Public
                     <br />
                     infrastructure.
@@ -539,15 +425,12 @@ export default function ServicesPage() {
         {/* =====================================================
             CAPABILITY STRIP
         ===================================================== */}
-        <section className="border-y border-[#E4E6EB] bg-white px-6 py-20 sm:px-10 md:px-16 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="border-y border-[#E4E6EB] bg-white py-20">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <div className="grid grid-cols-2 gap-y-10 md:grid-cols-4">
-              {[
-                ["42+", "Years Experience"],
-                ["1,500+", "Projects"],
-                ["100+", "Employees"],
-                ["20+", "Clients"],
-              ].map(([number, label], index) => (
+              {company.statistics
+                .map((st) => [st.value, st.label])
+                .map(([number, label], index) => (
                 <Reveal key={label} delay={index * 0.08}>
                   <div
                     className={`${
@@ -576,7 +459,7 @@ export default function ServicesPage() {
         {/* =====================================================
             CTA
         ===================================================== */}
-        <section className="bg-[#111318] px-6 py-24 text-white sm:px-10 md:px-16 md:py-32 lg:px-20">
+        <section className="bg-[#111318] py-20 text-white lg:py-28">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -585,12 +468,12 @@ export default function ServicesPage() {
               amount: 0.25,
             }}
             variants={slowReveal}
-            className="mx-auto max-w-[1400px]"
+            className="mx-auto max-w-7xl px-6 lg:px-10"
           >
             <SectionLabel>Next</SectionLabel>
 
             <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
-              <h2 className="max-w-4xl text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-8xl">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl max-w-4xl">
                 Explore our
                 <br />
                 <span style={{ color: MAGENTA }}>
@@ -600,7 +483,7 @@ export default function ServicesPage() {
 
               <a
                 href="/projects"
-                className="inline-flex w-fit items-center gap-4 border border-white/20 px-6 py-4 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-all duration-300 hover:border-[#E41B76] hover:bg-[#E41B76]"
+                className={btnPrimary}
               >
                 View Projects
                 <span>→</span>

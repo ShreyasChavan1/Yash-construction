@@ -4,10 +4,16 @@ import {
   motion,
   type Variants,
 } from "motion/react";
+import { company } from "../lib/company";
 
-import Navbar from "../components/Navbar";
 
 const MAGENTA = "#E41B76";
+
+// Shared pill buttons. On dark sections the primary hover turns white (a #111318 hover would vanish into the background).
+const btnBase =
+  "inline-flex items-center justify-center gap-3 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-wide transition";
+const btnPrimary = `${btnBase} bg-[#E41B76] text-white hover:bg-white hover:text-[#111318]`;
+const btnOutline = `${btnBase} border border-white/25 text-white hover:border-[#E41B76] hover:bg-[#E41B76]`;
 const DARK = "#111318";
 const MUTED = "#555A65";
 const BORDER = "#E4E6EB";
@@ -85,59 +91,19 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-const values = [
-  {
-    number: "01",
-    title: "Integrity",
-    text: "Conducting construction and contracting work with transparency, responsibility and professional discipline.",
-  },
-  {
-    number: "02",
-    title: "Safety",
-    text: "Maintaining a strong focus on safe working practices across construction sites and operations.",
-  },
-  {
-    number: "03",
-    title: "Quality",
-    text: "Delivering construction work with attention to materials, workmanship and project requirements.",
-  },
-  {
-    number: "04",
-    title: "Customer Satisfaction",
-    text: "Building long-term relationships through dependable execution and responsible project delivery.",
-  },
-];
+const values = company.coreValues.map((v, i) => ({
+  number: String(i + 1).padStart(2, "0"),
+  title: v.title,
+  text: v.description,
+}));
 
-const projectTypes = [
-  "Roads",
-  "Bridges",
-  "Residential",
-  "Commercial",
-  "Government Buildings",
-];
+const projectTypes = company.projectTypes;
 
-const partners = [
-  {
-    name: "Chandrashekhar Sitaram Bhingarde",
-    role: "Partner",
-    image: "/images/partners/chandrashekhar.jpg",
-  },
-  {
-    name: "Sudhir Sitaram Bhingarde",
-    role: "Partner",
-    image: "/images/partners/sudhir.jpg",
-  },
-  {
-    name: "Sandip Sitaram Bhingarde",
-    role: "Partner",
-    image: "/images/partners/sandip.jpg",
-  },
-];
+const partners = company.partners;
 
 export default function AboutPage() {
   return (
     <>
-      {/* <Navbar /> */}
 
       <main
         className="overflow-hidden bg-white text-[#111318] antialiased"
@@ -148,8 +114,8 @@ export default function AboutPage() {
         {/* =====================================================
             PAGE HERO
         ===================================================== */}
-        <section className="relative overflow-hidden bg-[#111318] pt-20 text-white">
-          <div className="mx-auto flex min-h-[70svh] max-w-[1500px] flex-col justify-end px-6 pb-16 sm:px-10 md:px-16 lg:px-20">
+        <section className="relative overflow-hidden bg-[#111318] text-white">
+          <div className="mx-auto flex min-h-[70svh] flex-col justify-end pb-16 max-w-7xl px-6 lg:px-10 pt-32 lg:pt-40">
             <div className="absolute inset-0 opacity-[0.08]">
               <div className="absolute left-[15%] top-0 h-full w-px bg-white" />
               <div className="absolute left-[40%] top-0 h-full w-px bg-white" />
@@ -166,7 +132,7 @@ export default function AboutPage() {
             >
               <SectionLabel>Company Profile</SectionLabel>
 
-              <h1 className="max-w-6xl text-6xl font-bold uppercase leading-[0.9] tracking-tight sm:text-7xl md:text-8xl lg:text-[9rem]">
+              <h1 className="text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-8xl max-w-6xl">
                 About
                 <br />
                 <span style={{ color: MAGENTA }}>
@@ -177,12 +143,12 @@ export default function AboutPage() {
               <div className="mt-10 flex max-w-4xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
                 <p className="max-w-2xl text-base leading-7 text-white/65 md:text-lg">
                   A construction and infrastructure partnership firm
-                  established in 1984, operating across Lanja Taluka,
+                  established in {company.established}, operating across Lanja Taluka,
                   Rajapur Taluka and Ratnagiri District.
                 </p>
 
                 <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/40">
-                  EST. 1984
+                  EST. {company.established}
                 </div>
               </div>
             </motion.div>
@@ -192,13 +158,13 @@ export default function AboutPage() {
         {/* =====================================================
             COMPANY OVERVIEW
         ===================================================== */}
-        <section className="px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto grid max-w-[1400px] gap-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
+        <section className="py-20 lg:py-28">
+          <div className="mx-auto grid gap-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24 max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div>
                 <SectionLabel>Who We Are</SectionLabel>
 
-                <h2 className="max-w-lg text-5xl font-bold uppercase leading-[0.9] tracking-tight sm:text-6xl md:text-7xl">
+                <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl max-w-lg">
                   Four decades
                   <br />
                   of <span style={{ color: MAGENTA }}>execution.</span>
@@ -210,7 +176,7 @@ export default function AboutPage() {
               <div>
                 <p className="text-lg leading-8 text-[#555A65] md:text-xl">
                   YASH CONSTRUCTION is a partnership firm established in
-                  1984 with extensive experience in construction and
+                  {company.established} with extensive experience in construction and
                   infrastructure works. The company operates across Lanja
                   Taluka, Rajapur Taluka and Ratnagiri District, undertaking
                   projects across road, bridge, residential, commercial and
@@ -218,7 +184,7 @@ export default function AboutPage() {
                 </p>
 
                 <p className="mt-7 text-lg leading-8 text-[#555A65] md:text-xl">
-                  Over its 42 years of operations, the company has developed
+                  Over its {company.experienceYears} years of operations, the company has developed
                   capabilities across multiple stages of construction,
                   supported by its own machinery, production facilities and
                   construction resources.
@@ -239,7 +205,7 @@ export default function AboutPage() {
             COMPANY DATA
         ===================================================== */}
         <section className="border-y border-[#E4E6EB] bg-[#F7F7F8]">
-          <div className="mx-auto grid max-w-[1400px] md:grid-cols-2">
+          <div className="mx-auto grid md:grid-cols-2 max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="border-b border-[#E4E6EB] p-8 sm:p-10 md:border-b-0 md:border-r md:p-16">
                 <SectionLabel>Company Details</SectionLabel>
@@ -259,7 +225,7 @@ export default function AboutPage() {
                       Established
                     </span>
                     <span className="mt-2 block text-xl font-semibold">
-                      1984
+                      {company.established}
                     </span>
                   </div>
 
@@ -268,7 +234,7 @@ export default function AboutPage() {
                       Organization
                     </span>
                     <span className="mt-2 block text-xl font-semibold">
-                      Partnership Firm
+                      {company.type}
                     </span>
                   </div>
 
@@ -280,7 +246,7 @@ export default function AboutPage() {
                       className="mt-2 block text-xl font-semibold"
                       style={{ color: MAGENTA }}
                     >
-                      42 Years
+                      {company.experienceYears} Years
                     </span>
                   </div>
                 </div>
@@ -329,14 +295,14 @@ export default function AboutPage() {
         {/* =====================================================
             PROJECT TYPES
         ===================================================== */}
-        <section className="bg-[#111318] px-6 py-24 text-white sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="bg-[#111318] py-24 text-white lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-end">
                 <div>
                   <SectionLabel>Experience</SectionLabel>
 
-                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                     Built across
                     <br />
                     <span style={{ color: MAGENTA }}>
@@ -403,13 +369,13 @@ export default function AboutPage() {
         {/* =====================================================
             VALUES
         ===================================================== */}
-        <section className="px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="max-w-2xl">
                 <SectionLabel>Core Values</SectionLabel>
 
-                <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                   How we
                   <br />
                   <span style={{ color: MAGENTA }}>
@@ -441,7 +407,9 @@ export default function AboutPage() {
                     ease: [0.16, 1, 0.3, 1],
                   }}
                   className={`group border-b border-[#E4E6EB] p-7 sm:p-10 ${
-                    index % 2 === 0
+                    index === values.length - 1 && values.length % 2 === 1
+                      ? "md:col-span-2"
+                      : index % 2 === 0
                       ? "md:border-r"
                       : ""
                   }`}
@@ -462,7 +430,7 @@ export default function AboutPage() {
                     </span>
                   </div>
 
-                  <h3 className="mt-12 text-3xl font-bold uppercase">
+                  <h3 className="text-xl font-black uppercase sm:text-2xl mt-12">
                     {value.title}
                   </h3>
 
@@ -478,14 +446,14 @@ export default function AboutPage() {
         {/* =====================================================
             PARTNERS
         ===================================================== */}
-        <section className="bg-[#F7F7F8] px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="bg-[#F7F7F8] py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-end">
                 <div>
                   <SectionLabel>Leadership</SectionLabel>
 
-                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                     The
                     <br />
                     <span style={{ color: MAGENTA }}>
@@ -523,7 +491,7 @@ export default function AboutPage() {
                     </div>
 
                     <div className="p-6">
-                      <h3 className="text-xl font-bold uppercase leading-tight">
+                      <h3 className="text-xl font-black uppercase sm:text-2xl">
                         {partner.name}
                       </h3>
 
@@ -550,7 +518,7 @@ export default function AboutPage() {
         {/* =====================================================
             ABOUT CTA
         ===================================================== */}
-        <section className="bg-[#111318] px-6 py-24 text-white sm:px-10 md:px-16 md:py-32 lg:px-20">
+        <section className="bg-[#111318] py-24 text-white lg:py-28">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -559,12 +527,12 @@ export default function AboutPage() {
               amount: 0.25,
             }}
             variants={slowReveal}
-            className="mx-auto max-w-[1400px]"
+            className="mx-auto max-w-7xl px-6 lg:px-10"
           >
             <SectionLabel>Next</SectionLabel>
 
             <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
-              <h2 className="max-w-4xl text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-8xl">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl max-w-4xl">
                 See what we
                 <br />
                 <span style={{ color: MAGENTA }}>
@@ -574,7 +542,7 @@ export default function AboutPage() {
 
               <a
                 href="/projects"
-                className="inline-flex w-fit items-center gap-4 border border-white/20 px-6 py-4 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-all duration-300 hover:border-[#E41B76] hover:bg-[#E41B76] hover:text-white"
+                className={btnPrimary}
               >
                 Explore Projects
                 <span>→</span>

@@ -1,5 +1,26 @@
+"use client";
+
 import Image from "next/image";
-import Navbar from "../components/Navbar";
+import { motion, type Variants } from "motion/react";
+
+
+const reveal: Variants = {
+  hidden: { opacity: 0, y: 45 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
+const slowReveal: Variants = {
+  hidden: { opacity: 0, y: 65 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
 
 type GalleryItem = {
   src: string;
@@ -32,12 +53,16 @@ const categories = [
 export default function GalleryPage() {
   return (
     <>
-     {/* <Navbar/> */}
    
     <main className="bg-[#F5F5F3] text-[#111318]">
       {/* HERO */}
       <section className="relative overflow-hidden bg-[#111318] text-white">
-        <div className="mx-auto max-w-7xl px-6 pb-20 pt-36 lg:px-10 lg:pb-28">
+        <motion.div
+    className="mx-auto max-w-7xl px-6 pb-20 pt-32 lg:px-10 lg:pb-28 lg:pt-40"
+    initial="hidden"
+    animate="visible"
+    variants={slowReveal}
+  >
           <div className="max-w-4xl">
             <p className="mb-6 text-sm font-bold uppercase tracking-[0.25em] text-[#E41B76]">
               Gallery
@@ -55,7 +80,7 @@ export default function GalleryPage() {
               the work.
             </p>
           </div>
-        </div>
+        </motion.div>
 
         <div className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full border-[40px] border-[#E41B76]/20" />
       </section>
@@ -222,7 +247,7 @@ export default function GalleryPage() {
 
             <a
               href="/projects"
-              className="inline-flex w-fit items-center rounded-full bg-[#111318] px-7 py-4 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-white hover:text-[#111318]"
+              className="inline-flex w-fit items-center rounded-full bg-[#111318] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-white hover:text-[#111318]"
             >
               View Projects →
             </a>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import Logo from "./Logo";
+import { company } from "../lib/company";
 
 
 const MAGENTA = "#E41B76";
@@ -181,7 +182,7 @@ export default function Navbar() {
 
               <div className="mt-8 flex flex-wrap gap-3 font-mono text-[11px] font-bold uppercase tracking-wider">
                 <a
-                  href="tel:+917798763555"
+                  href={company.contact.primaryPhone.href}
                   className="rounded px-5 py-3 text-white"
                   style={{ backgroundColor: MAGENTA }}
                 >
@@ -189,7 +190,7 @@ export default function Navbar() {
                 </a>
 
                 <a
-                  href="https://wa.me/917798763555"
+                  href={company.contact.whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="rounded border border-black/20 bg-black/5 px-5 py-3 text-[#111318]"

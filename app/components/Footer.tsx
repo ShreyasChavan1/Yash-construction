@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { company } from "../lib/company";
 
 const MAGENTA = "#E41B76";
 
@@ -36,7 +37,7 @@ export default function Footer() {
                 </p>
 
                 <p className="text-xs uppercase tracking-[0.2em] text-white/40">
-                  Since 1984
+                  Since {company.established}
                 </p>
               </div>
             </div>
@@ -53,11 +54,12 @@ export default function Footer() {
               </p>
 
               <p className="mt-2 text-sm leading-6 text-white/60">
-                Yash Construction-1933, Radhai Niwas,
-                <br />
-                Lanja, Tal-Lanja,
-                <br />
-                Dist-Ratnagiri - 416701
+                {company.address.lines.map((line, i) => (
+                  <span key={line}>
+                    {i > 0 && <br />}
+                    {line}
+                  </span>
+                ))}
               </p>
             </div>
           </div>
@@ -94,19 +96,15 @@ export default function Footer() {
                 </p>
 
                 <div className="mt-1 space-y-1">
-                  <a
-                    href="tel:7798763555"
-                    className="block text-sm text-white/70 transition hover:text-white"
-                  >
-                    +91 77987 63555
-                  </a>
-
-                  <a
-                    href="tel:9090240707"
-                    className="block text-sm text-white/70 transition hover:text-white"
-                  >
-                    +91 90902 40707
-                  </a>
+                  {company.contact.phones.map((phone) => (
+                    <a
+                      key={phone.number}
+                      href={phone.href}
+                      className="block text-sm text-white/70 transition hover:text-white"
+                    >
+                      {phone.display}
+                    </a>
+                  ))}
                 </div>
               </div>
 
@@ -116,15 +114,15 @@ export default function Footer() {
                 </p>
 
                 <a
-                  href="mailto:yash_const@rediffmail.com"
+                  href={company.contact.emailHref}
                   className="mt-1 block break-all text-sm text-white/70 transition hover:text-white"
                 >
-                  yash_const@rediffmail.com
+                  {company.contact.email}
                 </a>
               </div>
 
               <a
-                href="https://wa.me/917798763555"
+                href={company.contact.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex rounded-full bg-[#E41B76] px-5 py-3 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-white hover:text-[#111318]"
@@ -145,7 +143,7 @@ export default function Footer() {
           </p>
 
           <p>
-            Established 1984 · Lanja, Ratnagiri
+            Established {company.established} · Lanja, Ratnagiri
           </p>
         </div>
       </div>

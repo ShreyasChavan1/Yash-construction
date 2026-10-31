@@ -1,30 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
-import Navbar from "../components/Navbar";
+import { motion, type Variants } from "motion/react";
+import { company } from "../lib/company";
 
 const MAGENTA = "#E41B76";
+
+// Shared pill buttons. On dark sections the primary hover turns white (a #111318 hover would vanish into the background).
+const btnBase =
+  "inline-flex items-center justify-center gap-3 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-wide transition";
+const btnPrimary = `${btnBase} bg-[#E41B76] text-white hover:bg-white hover:text-[#111318]`;
+const btnOutline = `${btnBase} border border-white/25 text-white hover:border-[#E41B76] hover:bg-[#E41B76]`;
 
 const contactDetails = [
   {
     label: "Registered Office",
-    value: "Yash Construction-1933, Radhai Niwas",
-    detail: "Lanja, Tal-Lanja, Dist-Ratnagiri - 416701",
+    value: company.address.line1,
+    detail: company.address.line2,
   },
   {
     label: "Mobile",
-    value: "7798763555",
+    value: company.contact.phones[0].number,
     detail: "Primary contact",
   },
   {
     label: "Alternate Mobile",
-    value: "9090270707",
+    value: company.contact.phones[1].number,
     detail: "Contact number",
   },
   {
     label: "Email",
-    value: "yash_const@rediffmail.com",
+    value: company.contact.email,
     detail: "Business enquiries",
   },
 ];
@@ -47,25 +53,27 @@ const quickLinks = [
   },
 ];
 
-const fadeUp = {
-  hidden: {
-    opacity: 0,
-    y: 35,
-  },
+const reveal: Variants = {
+  hidden: { opacity: 0, y: 45 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.75,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
+    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
+const slowReveal: Variants = {
+  hidden: { opacity: 0, y: 65 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
 export default function ContactPage() {
   return (
     <>
-    {/* <Navbar/> */}
     <main className="bg-[#111318] text-white">
 
       {/* HERO */}
@@ -84,7 +92,12 @@ export default function ContactPage() {
 
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-10 pt-32 pb-20">
+        <motion.div
+    className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-32 pb-20 lg:px-10 lg:pt-40"
+    initial="hidden"
+    animate="visible"
+    variants={slowReveal}
+  >
 
           <p
             className="text-sm tracking-[0.35em] uppercase mb-5"
@@ -93,7 +106,7 @@ export default function ContactPage() {
             Get in Touch
           </p>
 
-          <h1 className="text-[clamp(4rem,11vw,10rem)] leading-[0.8] font-black uppercase tracking-[-0.06em]">
+          <h1 className="text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-8xl">
             CONTACT
           </h1>
 
@@ -102,14 +115,14 @@ export default function ContactPage() {
             construction requirements and business communication.
           </p>
 
-        </div>
+        </motion.div>
 
       </section>
 
       {/* CONTACT INFORMATION */}
-      <section className="bg-[#F5F5F3] text-[#111318] py-24 md:py-32">
+      <section className="bg-[#F5F5F3] text-[#111318] py-20 lg:py-28">
 
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
           <div className="grid lg:grid-cols-12 gap-12">
 
@@ -123,7 +136,7 @@ export default function ContactPage() {
                 01 / Contact
               </p>
 
-              <h2 className="mt-5 text-4xl md:text-6xl font-black uppercase leading-[0.9] tracking-tight">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl mt-5">
                 LET&apos;S
                 <br />
                 TALK
@@ -149,7 +162,7 @@ export default function ContactPage() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
-                    variants={fadeUp}
+                    variants={reveal}
                     className="grid md:grid-cols-[0.7fr_1.6fr] gap-5 py-7 border-b border-black/10"
                   >
 
@@ -195,12 +208,6 @@ export default function ContactPage() {
                         {item.detail}
                       </p>
 
-                      {item.label === "Registered Office" && (
-                        <p className="mt-1 text-lg text-black/65">
-                          {item.detail}
-                        </p>
-                      )}
-
                     </div>
 
                   </motion.div>
@@ -217,9 +224,9 @@ export default function ContactPage() {
       </section>
 
       {/* MAP */}
-      <section className="bg-[#111318] py-24 md:py-32">
+      <section className="bg-[#111318] py-20 lg:py-28">
 
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
           <div className="grid lg:grid-cols-12 gap-12 items-center">
 
@@ -232,25 +239,23 @@ export default function ContactPage() {
                 02 / Location
               </p>
 
-              <h2 className="text-4xl md:text-6xl font-black uppercase leading-[0.9]">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                 FIND
                 <br />
                 US.
               </h2>
 
               <p className="mt-7 text-white/50 leading-relaxed max-w-md">
-                Yash Construction-1933, Radhai Niwas, Lanja,
-                Tal-Lanja, Dist-Ratnagiri - 416701.
+                {company.address.full}.
               </p>
 
               <a
-                href="https://www.google.com/maps/search/Yash+Construction/@16.8620473,73.5527078,17z?hl=en&entry=ttu"
+                href={company.maps.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex mt-8 px-7 py-4 font-semibold text-white transition-opacity hover:opacity-80"
-                style={{ backgroundColor: MAGENTA }}
+                className={`${btnPrimary} mt-8`}
               >
-                Open in Google Maps
+                Open in Google Maps →
               </a>
 
             </div>
@@ -259,10 +264,10 @@ export default function ContactPage() {
             <div className="lg:col-span-7">
 
               <a
-                href="https://www.google.com/maps/search/Yash+Construction/@16.8620473,73.5527078,17z?hl=en&entry=ttu"
+                href={company.maps.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative block aspect-[16/9] overflow-hidden bg-white/5 border border-white/10"
+                className="group relative block aspect-[16/9] overflow-hidden rounded-[2rem] border border-white/10 bg-white/5"
               >
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -305,9 +310,9 @@ export default function ContactPage() {
       </section>
 
       {/* QUICK LINKS */}
-      <section className="bg-[#F5F5F3] text-[#111318] py-24 md:py-32">
+      <section className="bg-[#F5F5F3] text-[#111318] py-20 lg:py-28">
 
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
           <div className="mb-14">
 
@@ -318,7 +323,7 @@ export default function ContactPage() {
               03 / Explore
             </p>
 
-            <h2 className="text-4xl md:text-6xl font-black uppercase leading-[0.9]">
+            <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
               MORE FROM
               <br />
               YASH
@@ -326,13 +331,13 @@ export default function ContactPage() {
 
           </div>
 
-          <div className="grid md:grid-cols-3 gap-px bg-black/10">
+          <div className="grid gap-px bg-black/10 md:grid-cols-2 lg:grid-cols-3">
 
             {quickLinks.map((item, index) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="group bg-[#F5F5F3] p-8 md:p-10 hover:bg-white transition-colors"
+                className="group bg-[#F5F5F3] p-8 transition-colors hover:bg-white md:max-lg:last:col-span-2 lg:p-10"
               >
 
                 <div className="flex items-start justify-between">
@@ -350,7 +355,7 @@ export default function ContactPage() {
 
                 </div>
 
-                <h3 className="mt-14 text-2xl md:text-3xl font-black uppercase">
+                <h3 className="text-xl font-black uppercase sm:text-2xl mt-14">
                   {item.title}
                 </h3>
 
@@ -368,14 +373,14 @@ export default function ContactPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="relative bg-[#111318] py-28 overflow-hidden">
+      <section className="relative bg-[#111318] py-20 lg:py-28 overflow-hidden">
 
         <div
           className="absolute -right-40 -bottom-40 h-[500px] w-[500px] rounded-full blur-3xl opacity-20"
           style={{ backgroundColor: MAGENTA }}
         />
 
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10">
+        <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
 
           <p
             className="text-sm tracking-[0.3em] uppercase mb-5"
@@ -384,7 +389,7 @@ export default function ContactPage() {
             YASH CONSTRUCTION
           </p>
 
-          <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tight leading-[0.85] max-w-5xl">
+          <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl max-w-5xl">
             LET&apos;S BUILD
             <br />
             SOMETHING
@@ -395,18 +400,17 @@ export default function ContactPage() {
           <div className="mt-12 flex flex-wrap gap-4">
 
             <a
-              href="tel:+917798763555"
-              className="inline-flex items-center justify-center px-7 py-4 text-white font-semibold"
-              style={{ backgroundColor: MAGENTA }}
+              href={company.contact.primaryPhone.href}
+              className={btnPrimary}
             >
-              Call 7798763555
+              Call {company.contact.primaryPhone.number} →
             </a>
 
             <a
-              href="mailto:yash_const@rediffmail.com"
-              className="inline-flex items-center justify-center px-7 py-4 border border-white/25 text-white font-semibold hover:border-white transition"
+              href={company.contact.emailHref}
+              className={btnOutline}
             >
-              Email Us
+              Email Us →
             </a>
 
           </div>

@@ -6,10 +6,15 @@ import {
   type Variants,
 } from "motion/react";
 
-import Navbar from "../components/Navbar";
 import { projects } from "../lib/projects";
 
 const MAGENTA = "#E41B76";
+
+// Shared pill buttons. On dark sections the primary hover turns white (a #111318 hover would vanish into the background).
+const btnBase =
+  "inline-flex items-center justify-center gap-3 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-wide transition";
+const btnPrimary = `${btnBase} bg-[#E41B76] text-white hover:bg-white hover:text-[#111318]`;
+const btnOutline = `${btnBase} border border-white/25 text-white hover:border-[#E41B76] hover:bg-[#E41B76]`;
 const DARK = "#111318";
 
 const reveal: Variants = {
@@ -92,7 +97,6 @@ function SectionLabel({
 export default function ProjectsPage() {
   return (
     <>
-      {/* <Navbar /> */}
 
       <main
         className="overflow-hidden bg-white text-[#111318]"
@@ -101,7 +105,7 @@ export default function ProjectsPage() {
         {/* =====================================================
             HERO
         ===================================================== */}
-        <section className="relative overflow-hidden bg-[#111318] pt-20 text-white">
+        <section className="relative overflow-hidden bg-[#111318] text-white">
           <div className="absolute inset-0 opacity-[0.07]">
             <div className="absolute left-[18%] top-0 h-full w-px bg-white" />
             <div className="absolute left-[45%] top-0 h-full w-px bg-white" />
@@ -110,7 +114,7 @@ export default function ProjectsPage() {
 
           <div className="absolute right-[-20%] top-[-40%] h-[800px] w-[800px] rounded-full border border-white/10" />
 
-          <div className="relative mx-auto flex min-h-[70svh] max-w-[1500px] flex-col justify-end px-6 pb-16 sm:px-10 md:px-16 lg:px-20">
+          <div className="relative mx-auto flex min-h-[70svh] max-w-7xl flex-col justify-end px-6 pb-16 pt-32 lg:px-10 lg:pt-40">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -118,7 +122,7 @@ export default function ProjectsPage() {
             >
               <SectionLabel>Works Executed</SectionLabel>
 
-              <h1 className="max-w-6xl text-6xl font-bold uppercase leading-[0.87] tracking-tight sm:text-7xl md:text-8xl lg:text-[9rem]">
+              <h1 className="text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-8xl max-w-6xl">
                 Selected
                 <br />
                 <span style={{ color: MAGENTA }}>
@@ -137,13 +141,13 @@ export default function ProjectsPage() {
         {/* =====================================================
             INTRO
         ===================================================== */}
-        <section className="px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto grid max-w-[1400px] gap-12 md:grid-cols-[0.7fr_1.3fr]">
+        <section className="py-20 lg:py-28">
+          <div className="mx-auto grid max-w-7xl px-6 lg:px-10 gap-12 md:grid-cols-[0.7fr_1.3fr]">
             <Reveal>
               <div>
                 <SectionLabel>Project Portfolio</SectionLabel>
 
-                <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                   Work that
                   <br />
                   speaks
@@ -176,14 +180,14 @@ export default function ProjectsPage() {
         {/* =====================================================
             PROJECT TABLE / LIST
         ===================================================== */}
-        <section className="bg-[#111318] px-6 py-24 text-white sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="bg-[#111318] py-20 text-white lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
                 <div>
                   <SectionLabel>Works Executed</SectionLabel>
 
-                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                     Project
                     <br />
                     <span style={{ color: MAGENTA }}>
@@ -233,7 +237,7 @@ export default function ProjectsPage() {
                       </span>
 
                       <div>
-                        <h3 className="text-2xl font-bold uppercase transition-colors duration-300 group-hover:text-[#E41B76] sm:text-3xl">
+                        <h3 className="text-xl font-black uppercase sm:text-2xl transition-colors duration-300 group-hover:text-[#E41B76]">
                           {project.name}
                         </h3>
 
@@ -303,14 +307,14 @@ export default function ProjectsPage() {
         {/* =====================================================
             PROJECT DETAIL FORMAT
         ===================================================== */}
-        <section className="px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="grid gap-10 md:grid-cols-[0.75fr_1.25fr]">
                 <div>
                   <SectionLabel>Project Details</SectionLabel>
 
-                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                     Every project.
                     <br />
                     <span style={{ color: MAGENTA }}>
@@ -363,14 +367,14 @@ export default function ProjectsPage() {
         {/* =====================================================
             PROJECT PHOTOGRAPHY
         ===================================================== */}
-        <section className="bg-[#F7F7F8] px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="bg-[#F7F7F8] py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="grid gap-10 md:grid-cols-[1fr_0.7fr] md:items-end">
                 <div>
                   <SectionLabel>Project Photography</SectionLabel>
 
-                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                     Built
                     <br />
                     <span style={{ color: MAGENTA }}>
@@ -413,7 +417,7 @@ export default function ProjectsPage() {
         {/* =====================================================
             CTA
         ===================================================== */}
-        <section className="bg-[#111318] px-6 py-24 text-white sm:px-10 md:px-16 md:py-32 lg:px-20">
+        <section className="bg-[#111318] py-20 text-white lg:py-28">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -422,12 +426,12 @@ export default function ProjectsPage() {
               amount: 0.25,
             }}
             variants={slowReveal}
-            className="mx-auto max-w-[1400px]"
+            className="mx-auto max-w-7xl px-6 lg:px-10"
           >
             <SectionLabel>Next</SectionLabel>
 
             <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
-              <h2 className="max-w-4xl text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-8xl">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl max-w-4xl">
                 See the
                 <br />
                 <span style={{ color: MAGENTA }}>
@@ -437,7 +441,7 @@ export default function ProjectsPage() {
 
               <Link
                 href="/machinery"
-                className="inline-flex w-fit items-center gap-4 border border-white/20 px-6 py-4 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-all duration-300 hover:border-[#E41B76] hover:bg-[#E41B76]"
+                className={btnPrimary}
               >
                 View Machinery
                 <span>→</span>

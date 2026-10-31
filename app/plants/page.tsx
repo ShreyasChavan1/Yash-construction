@@ -1,66 +1,45 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
-   import Navbar from "../components/Navbar";
+import { motion, type Variants } from "motion/react";
+import Image from "next/image";
+import { plants as plantsData, getPlantSpecification } from "../lib/plants";
 
 const MAGENTA = "#E41B76";
+
+// Shared pill buttons. On dark sections the primary hover turns white (a #111318 hover would vanish into the background).
+const btnBase =
+  "inline-flex items-center justify-center gap-3 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-wide transition";
+const btnPrimary = `${btnBase} bg-[#E41B76] text-white hover:bg-white hover:text-[#111318]`;
+const btnOutline = `${btnBase} border border-white/25 text-white hover:border-[#E41B76] hover:bg-[#E41B76]`;
 const DARK = "#111318";
 const LIGHT = "#F5F5F3";
 
-const plants = [
-  {
-    number: "01",
-    name: "Asphalt Plant",
-    type: "Production Facility",
-    capacity: "120 DM",
-    location: "Waghangaon, Tal-Lanja, Dist-Ratnagiri, Maharashtra",
-    image: "/images/plants/asphalt-plant.jpg",
-    description:
-      "YASH CONSTRUCTION operates an asphalt plant at Waghangaon, Tal-Lanja, Dist-Ratnagiri, supporting its road construction and asphalt-related works.",
-  },
-  {
-    number: "02",
-    name: "Crusher Plant",
-    type: "Aggregate Processing",
-    capacity:
-      "24X12 · 16X6 · 42X32 · V-Groove · NVI760 · NRI-1005",
-    location: "Waghangaon, Tal-Lanja, Dist-Ratnagiri, Maharashtra",
-    image: "/images/plants/crusher-plant.jpg",
-    description:
-      "The crusher plant at Waghangaon supports the production and processing of crushed aggregate materials used across construction activities.",
-  },
-  {
-    number: "03",
-    name: "Quarry",
-    type: "Material Source",
-    capacity: "Standard capacity",
-    location: "Waghangaon, Tal-Lanja, Dist-Ratnagiri, Maharashtra",
-    image: "/images/plants/quarry.jpg",
-    description:
-      "YASH CONSTRUCTION's quarry operation at Waghangaon forms part of its material and infrastructure resources.",
-  },
-  {
-    number: "04",
-    name: "RMC Plant",
-    type: "Concrete Production",
-    capacity: "30 Cum",
-    location: "Waghangaon, Tal-Lanja, Dist-Ratnagiri, Maharashtra",
-    image: "/images/plants/rmc-plant.jpg",
-    description:
-      "The RMC plant provides concrete production capability as part of YASH CONSTRUCTION's construction infrastructure.",
-  },
-];
+const plants = plantsData.map((pl, i) => ({
+  number: String(i + 1).padStart(2, "0"),
+  name: pl.name,
+  type: pl.type,
+  capacity: getPlantSpecification(pl),
+  location: pl.location,
+  image: pl.image,
+  description: pl.description,
+}));
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 35 },
+const reveal: Variants = {
+  hidden: { opacity: 0, y: 45 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
+    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
+const slowReveal: Variants = {
+  hidden: { opacity: 0, y: 65 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -69,24 +48,31 @@ export default function PlantsPage() {
 
   return (
     <>
-    {/* <Navbar /> */}
     <div className="bg-[#111318] text-white">
 
       {/* HERO */}
 <section className="relative min-h-[75vh] overflow-hidden flex items-end">
 
   <div className="absolute inset-0 z-0">
-    <img
+    <Image
       src="/images/plants/plants-hero.jpg"
       alt="YASH CONSTRUCTION plant infrastructure"
-      className="h-full w-full object-cover"
+      fill
+      priority
+      sizes="100vw"
+      className="object-cover"
     />
 
     <div className="absolute inset-0 bg-black/55" />
     <div className="absolute inset-0 bg-gradient-to-t from-[#111318] via-black/30 to-black/10" />
   </div>
 
-  <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-10 pt-32 pb-20">
+  <motion.div
+    className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-32 pb-20 lg:px-10 lg:pt-40"
+    initial="hidden"
+    animate="visible"
+    variants={slowReveal}
+  >
 
     <p
       className="text-sm tracking-[0.35em] uppercase mb-5"
@@ -95,7 +81,7 @@ export default function PlantsPage() {
       Infrastructure
     </p>
 
-    <h1 className="text-[clamp(4rem,11vw,10rem)] leading-[0.8] font-black uppercase tracking-[-0.06em]">
+    <h1 className="text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-8xl">
       PLANTS
     </h1>
 
@@ -104,12 +90,12 @@ export default function PlantsPage() {
       CONSTRUCTION&apos;s construction operations.
     </p>
 
-  </div>
+  </motion.div>
 </section>
 
       {/* INTRO */}
-      <section className="bg-[#F5F5F3] text-[#111318] py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+      <section className="bg-[#F5F5F3] text-[#111318] py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
           <div className="grid lg:grid-cols-12 gap-12 items-start">
 
@@ -123,7 +109,7 @@ export default function PlantsPage() {
             </div>
 
             <div className="lg:col-span-8">
-              <h2 className="text-4xl md:text-6xl font-bold leading-[0.95] tracking-tight">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                 BUILT AROUND
                 <br />
                 THE WORK.
@@ -142,8 +128,8 @@ export default function PlantsPage() {
       </section>
 
       {/* PLANTS */}
-      <section className="bg-[#111318] py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+      <section className="bg-[#111318] py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
           <div className="mb-16">
             <p
@@ -153,7 +139,7 @@ export default function PlantsPage() {
               Our Facilities
             </p>
 
-            <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tight">
+            <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
               PLANT
               <br />
               INFRASTRUCTURE
@@ -163,11 +149,12 @@ export default function PlantsPage() {
           <div className="space-y-24">
             {plants.map((plant, index) => (
               <motion.article
+  className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16"
   key={plant.name}
   initial="hidden"
   whileInView="visible"
   viewport={{ once: true, amount: 0.2 }}
-  variants={fadeUp}
+  variants={reveal}
               >
 
                 {/* IMAGE */}
@@ -176,11 +163,13 @@ export default function PlantsPage() {
                     index % 2 === 1 ? "lg:order-2" : ""
                   }`}
                 >
-                  <div className="relative aspect-[16/10] overflow-hidden bg-white/5">
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] bg-white/5">
 
-                    <img
+                    <Image
                       src={plant.image}
                       alt={plant.name}
+                      fill
+                      sizes="(min-width: 1024px) 58vw, 100vw"
                       className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
                     />
 
@@ -252,8 +241,8 @@ export default function PlantsPage() {
       </section>
 
       {/* LOCATION STRIP */}
-      <section className="bg-[#F5F5F3] text-[#111318] py-20">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+      <section className="bg-[#F5F5F3] text-[#111318] py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
 
@@ -265,7 +254,7 @@ export default function PlantsPage() {
                 Plant Location
               </p>
 
-              <h2 className="text-4xl md:text-6xl font-black uppercase leading-[0.9]">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                 WAGHANGAON
               </h2>
 
@@ -276,7 +265,7 @@ export default function PlantsPage() {
 
             <div className="border-l-2 pl-8 md:pl-12" style={{ borderColor: MAGENTA }}>
               <p className="text-5xl md:text-7xl font-black">
-                04
+                {String(plants.length).padStart(2, "0")}
               </p>
 
               <p className="mt-2 uppercase tracking-[0.2em] text-sm text-black/50">
@@ -290,14 +279,14 @@ export default function PlantsPage() {
       </section>
 
       {/* CTA */}
-      <section className="relative bg-[#111318] py-28 overflow-hidden">
+      <section className="relative bg-[#111318] py-20 lg:py-28 overflow-hidden">
 
         <div
           className="absolute -right-40 -bottom-40 h-[500px] w-[500px] rounded-full opacity-20 blur-3xl"
           style={{ backgroundColor: MAGENTA }}
         />
 
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10">
+        <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
 
           <p
             className="text-sm tracking-[0.3em] uppercase mb-5"
@@ -306,7 +295,7 @@ export default function PlantsPage() {
             Explore More
           </p>
 
-          <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tight leading-[0.85] max-w-4xl">
+          <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl max-w-4xl">
             FROM PLANT
             <br />
             TO PROJECT.
@@ -316,16 +305,16 @@ export default function PlantsPage() {
 
             <Link
               href="/machinery"
-              className="inline-flex items-center justify-center px-7 py-4 bg-white text-black font-semibold hover:bg-white/90 transition"
+              className={btnPrimary}
             >
-              View Machinery
+              View Machinery →
             </Link>
 
             <Link
               href="/projects"
-              className="inline-flex items-center justify-center px-7 py-4 border border-white/25 text-white font-semibold hover:border-white transition"
+              className={btnOutline}
             >
-              View Projects
+              View Projects →
             </Link>
 
           </div>

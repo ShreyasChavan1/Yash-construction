@@ -5,10 +5,16 @@ import {
   motion,
   type Variants,
 } from "motion/react";
+import { machinery as machineryData, formatQuantity } from "../lib/machinery";
 
-import Navbar from "../components/Navbar";
 
 const MAGENTA = "#E41B76";
+
+// Shared pill buttons. On dark sections the primary hover turns white (a #111318 hover would vanish into the background).
+const btnBase =
+  "inline-flex items-center justify-center gap-3 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-wide transition";
+const btnPrimary = `${btnBase} bg-[#E41B76] text-white hover:bg-white hover:text-[#111318]`;
+const btnOutline = `${btnBase} border border-white/25 text-white hover:border-[#E41B76] hover:bg-[#E41B76]`;
 const DARK = "#111318";
 
 const reveal: Variants = {
@@ -88,126 +94,17 @@ function SectionLabel({
   );
 }
 
-const machinery = [
-  {
-    number: "01",
-    name: "Excavator / Poclain",
-    quantity: "04",
-    specification: "100 M3 / Hour",
-    image: "/images/machinery/excavator.jpg",
-  },
-  {
-    number: "02",
-    name: "JCB",
-    quantity: "03",
-    specification: "3DX",
-    image: "/images/machinery/jcb.jpg",
-  },
-  {
-    number: "03",
-    name: "Paver",
-    quantity: "04",
-    specification: "54.5 BHP",
-    image: "/images/machinery/paver.jpg",
-  },
-  {
-    number: "04",
-    name: "Roller",
-    quantity: "04",
-    specification: "Standard",
-    image: "/images/machinery/roller.jpg",
-  },
-  {
-    number: "05",
-    name: "Grader",
-    quantity: "01",
-    specification: "Standard",
-    image: "/images/machinery/grader.jpg",
-  },
-  {
-    number: "06",
-    name: "Dumper",
-    quantity: "15",
-    specification: "3 Brass",
-    image: "/images/machinery/dumper.jpg",
-  },
-  {
-    number: "07",
-    name: "Asphalt Plant",
-    quantity: "01",
-    specification: "120 DM",
-    image: "/images/machinery/asphalt-plant.jpg",
-  },
-  {
-    number: "08",
-    name: "Crusher Plant",
-    quantity: "04",
-    specification:
-      "24X12 · 16X6 · 42X32 · V-Groove · NVI760 · NRI-1005",
-    image: "/images/machinery/crusher-plant.jpg",
-  },
-  {
-    number: "09",
-    name: "RMC Plant",
-    quantity: "01",
-    specification: "30 Cum",
-    image: "/images/machinery/rmc-plant.jpg",
-  },
-  {
-    number: "10",
-    name: "Loader",
-    quantity: "01",
-    specification: "2021D - Standard",
-    image: "/images/machinery/loader.jpg",
-  },
-  {
-    number: "11",
-    name: "Sand Washing Plant",
-    quantity: "01",
-    specification: "100 TPH",
-    image: "/images/machinery/sand-washing-plant.jpg",
-  },
-  {
-    number: "12",
-    name: "Water Tanker",
-    quantity: "02",
-    specification: "4.5 MT",
-    image: "/images/machinery/water-tanker.jpg",
-  },
-  {
-    number: "13",
-    name: "Bitumen Sprayer (Bozar)",
-    quantity: "04",
-    specification: "8.7 MT · 6 MT · 4.5 MT",
-    image: "/images/machinery/bitumen-sprayer.jpg",
-  },
-  {
-    number: "14",
-    name: "Diesel Tanker",
-    quantity: "01",
-    specification: "Standard",
-    image: "/images/machinery/diesel-tanker.jpg",
-  },
-  {
-    number: "15",
-    name: "Ajax Concrete Machine",
-    quantity: "01",
-    specification: "Standard",
-    image: "/images/machinery/ajax-concrete-machine.jpg",
-  },
-  {
-    number: "16",
-    name: "Trailer",
-    quantity: "02",
-    specification: "Standard",
-    image: "/images/machinery/trailer.jpg",
-  },
-];
+const machinery = machineryData.map((m, i) => ({
+  number: String(i + 1).padStart(2, "0"),
+  name: m.name,
+  quantity: formatQuantity(m),
+  specification: m.specification,
+  image: m.image,
+}));
 
 export default function MachineryPage() {
   return (
     <>
-      {/* <Navbar /> */}
 
       <main
         className="overflow-hidden bg-white text-[#111318]"
@@ -216,7 +113,7 @@ export default function MachineryPage() {
         {/* =====================================================
             HERO
         ===================================================== */}
-        <section className="relative overflow-hidden bg-[#111318] pt-20 text-white">
+        <section className="relative overflow-hidden bg-[#111318] text-white">
           <div className="absolute inset-0 opacity-[0.07]">
             <div className="absolute left-[15%] top-0 h-full w-px bg-white" />
             <div className="absolute left-[40%] top-0 h-full w-px bg-white" />
@@ -225,7 +122,7 @@ export default function MachineryPage() {
 
           <div className="absolute right-[-18%] top-[-40%] h-[800px] w-[800px] rounded-full border border-white/10" />
 
-          <div className="relative mx-auto flex min-h-[70svh] max-w-[1500px] flex-col justify-end px-6 pb-16 sm:px-10 md:px-16 lg:px-20">
+          <div className="relative mx-auto flex min-h-[70svh] max-w-7xl flex-col justify-end px-6 pb-16 pt-32 lg:px-10 lg:pt-40">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -233,7 +130,7 @@ export default function MachineryPage() {
             >
               <SectionLabel>Our Assets</SectionLabel>
 
-              <h1 className="max-w-6xl text-6xl font-bold uppercase leading-[0.87] tracking-tight sm:text-7xl md:text-8xl lg:text-[9rem]">
+              <h1 className="text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-8xl max-w-6xl">
                 Equipment
                 <br />
                 <span style={{ color: MAGENTA }}>
@@ -252,13 +149,13 @@ export default function MachineryPage() {
         {/* =====================================================
             INTRO
         ===================================================== */}
-        <section className="px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto grid max-w-[1400px] gap-14 md:grid-cols-[0.7fr_1.3fr] md:gap-24">
+        <section className="py-20 lg:py-28">
+          <div className="mx-auto grid max-w-7xl px-6 lg:px-10 gap-14 md:grid-cols-[0.7fr_1.3fr] md:gap-24">
             <Reveal>
               <div>
                 <SectionLabel>Construction Assets</SectionLabel>
 
-                <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                   Capability
                   <br />
                   backed by
@@ -293,14 +190,14 @@ export default function MachineryPage() {
         {/* =====================================================
             ASSET GRID
         ===================================================== */}
-        <section className="bg-[#111318] px-6 py-24 text-white sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="bg-[#111318] py-20 text-white lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
                 <div>
                   <SectionLabel>Machinery Fleet</SectionLabel>
 
-                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                     Our
                     <br />
                     <span style={{ color: MAGENTA }}>
@@ -370,7 +267,7 @@ export default function MachineryPage() {
 
                   {/* INFO */}
                   <div className="p-6">
-                    <h3 className="text-xl font-bold uppercase leading-tight">
+                    <h3 className="text-xl font-black uppercase sm:text-2xl">
                       {machine.name}
                     </h3>
 
@@ -396,14 +293,14 @@ export default function MachineryPage() {
         {/* =====================================================
             EQUIPMENT BREAKDOWN
         ===================================================== */}
-        <section className="px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto max-w-[1400px]">
+        <section className="py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr]">
                 <div>
                   <SectionLabel>Fleet Overview</SectionLabel>
 
-                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                     The numbers
                     <br />
                     behind the
@@ -476,13 +373,13 @@ export default function MachineryPage() {
         {/* =====================================================
             PLANTS CTA
         ===================================================== */}
-        <section className="bg-[#F7F7F8] px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
-          <div className="mx-auto grid max-w-[1400px] items-center gap-12 md:grid-cols-[1fr_0.8fr] md:gap-20">
+        <section className="bg-[#F7F7F8] py-20 lg:py-28">
+          <div className="mx-auto grid max-w-7xl px-6 lg:px-10 items-center gap-12 md:grid-cols-[1fr_0.8fr] md:gap-20">
             <Reveal>
               <div>
                 <SectionLabel>Plant Infrastructure</SectionLabel>
 
-                <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
                   More than
                   <br />
                   <span style={{ color: MAGENTA }}>
@@ -545,7 +442,7 @@ export default function MachineryPage() {
         {/* =====================================================
             CTA
         ===================================================== */}
-        <section className="bg-[#111318] px-6 py-24 text-white sm:px-10 md:px-16 md:py-32 lg:px-20">
+        <section className="bg-[#111318] py-20 text-white lg:py-28">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -554,12 +451,12 @@ export default function MachineryPage() {
               amount: 0.25,
             }}
             variants={slowReveal}
-            className="mx-auto max-w-[1400px]"
+            className="mx-auto max-w-7xl px-6 lg:px-10"
           >
             <SectionLabel>Next</SectionLabel>
 
             <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
-              <h2 className="max-w-4xl text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-8xl">
+              <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl max-w-4xl">
                 Explore our
                 <br />
                 <span style={{ color: MAGENTA }}>
@@ -569,7 +466,7 @@ export default function MachineryPage() {
 
               <Link
                 href="/plants"
-                className="inline-flex w-fit items-center gap-4 border border-white/20 px-6 py-4 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-all duration-300 hover:border-[#E41B76] hover:bg-[#E41B76]"
+                className={btnPrimary}
               >
                 View Plants
                 <span>→</span>

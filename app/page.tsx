@@ -9,93 +9,50 @@ import {
   AnimatePresence,
   type Variants,
 } from "motion/react";
-import Navbar from "./components/Navbar";
+import { company } from "./lib/company";
+import { featuredServices } from "./lib/services";
+import { machinery as machineryData, formatQuantity } from "./lib/machinery";
+import { plants as plantsData, getPlantSpecification } from "./lib/plants";
 
 // Color System derived directly from Yash Construction Logo Vector
 const MAGENTA = "#E41B76"; // Primary Signature Accent
+
+// Shared pill buttons. On dark sections the primary hover turns white (a #111318 hover would vanish into the background).
+const btnBase =
+  "inline-flex items-center justify-center gap-3 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-wide transition";
+const btnPrimary = `${btnBase} bg-[#E41B76] text-white hover:bg-white hover:text-[#111318]`;
+const btnOutline = `${btnBase} border border-white/25 text-white hover:border-[#E41B76] hover:bg-[#E41B76]`;
 const DARK = "#111318";    // Obsidian Brand Structure
 const MUTED = "#555A65";
 const BORDER_LIGHT = "#E4E6EB";
 
-const services = [
-  {
-    number: "01",
-    tag: "HIGHWAY & PAVING",
-    title: "Road construction & bituminous paving",
-    description:
-      "Bitumen roads, rigid concrete pavements, subgrade grading, and municipal arterial network developments.",
-    image: "/images/services/road-construction.jpg",
-  },
-  {
-    number: "02",
-    tag: "STRUCTURAL DRAINAGE",
-    title: "Bridge & box culvert works",
-    description:
-      "Minor river crossings, box culvert casting, retaining wall stabilization, and flood-resilient civil crossing infrastructures.",
-    image: "/images/services/bridge-construction.jpg",
-  },
-  {
-    number: "03",
-    tag: "INSTITUTIONAL & CIVIL",
-    title: "Institutional & building construction",
-    description:
-      "Turnkey structural construction for public works departments, commercial complexes, and municipal government office facilities.",
-    image: "/images/services/building-construction.jpg",
-  },
-  {
-    number: "04",
-    tag: "HEAVY EARTHMOVING",
-    title: "Earthwork & rock excavation",
-    description:
-      "Mass soil displacement, rocky terrain cutting, drainage trenching, and industrial site grading.",
-    image: "/images/services/earthwork.jpg",
-  },
-];
+// Data comes from app/lib/* (central content layer).
+const services = featuredServices.map((svc, i) => ({
+  number: String(i + 1).padStart(2, "0"),
+  tag: svc.tag,
+  title: svc.title,
+  description: svc.description,
+  image: svc.image ?? "",
+}));
 
-const machinery = [
-  {
-    name: "Excavator / Poclain",
-    quantity: "04",
-    spec: "100 M³ / Hour Rated",
-    role: "Heavy Trenching & Site Clearing",
-    image: "/images/machinery/excavator.jpg",
-  },
-  {
-    name: "JCB 3DX",
-    quantity: "03",
-    spec: "Heavy Utility Loader",
-    role: "Excavation & Backfill",
-    image: "/images/machinery/jcb.jpg",
-  },
-  {
-    name: "Mechanical Paver",
-    quantity: "04",
-    spec: "54.5 BHP Hydraulic Screed",
-    role: "Hot Mix Bitumen Laying",
-    image: "/images/machinery/paver.jpg",
-  },
-  {
-    name: "Vibratory Soil Roller",
-    quantity: "04",
-    spec: "10-12 Ton High Compaction",
-    role: "Surface & Sub-Base Compaction",
-    image: "/images/machinery/roller.jpg",
-  },
-];
+const machinery = machineryData.slice(0, 4).map((m) => ({
+  name: m.name,
+  quantity: formatQuantity(m),
+  spec: m.specification,
+  image: m.image,
+}));
 
-const stats = [
-  { num: "42+", label: "Years operational", caption: "Continuous contracting since 1984" },
-  { num: "1,500+", label: "Projects delivered", caption: "Across Ratnagiri & Western MH" },
-  { num: "20+", label: "Institutional clients", caption: "PWD, Councils & Private Tenders" },
-  { num: "100+", label: "Site crew & operators", caption: "Certified in-house operators" },
-];
+const stats = company.statistics.map((st) => ({
+  num: st.value,
+  label: st.label,
+  caption: st.caption,
+}));
 
-const plants = [
-  { name: "Asphalt Hot Mix Plant", capacity: "120 DM Rated", location: "Waghangaon Complex" },
-  { name: "Aggregate Crusher Unit", capacity: "Multi-stage screening", location: "Waghangaon Complex" },
-  { name: "Ready-Mix Concrete (RMC)", capacity: "30 Cu.M / Hour", location: "Waghangaon Complex" },
-  { name: "Basalt Stone Quarry", capacity: "Captive Supply", location: "Waghangaon Complex" },
-];
+const plants = plantsData.map((pl) => ({
+  name: pl.name,
+  capacity: getPlantSpecification(pl),
+  location: pl.shortLocation,
+}));
 
 const reveal: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -172,7 +129,6 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
 
       <main className="font-sans bg-white text-[#111318] antialiased selection:bg-[#E41B76] selection:text-white">
         {/* =========================================================
@@ -195,7 +151,7 @@ export default function Home() {
           </motion.div>
 
           {/* Telemetry Bar */}
-          <div className="relative z-10 mx-auto flex max-w-[1400px] items-center justify-between border-b border-white/10 px-6 pt-32 pb-4 font-mono text-xs text-white/50 sm:px-10 lg:px-20">
+          <div className="relative z-10 mx-auto flex items-center justify-between border-b border-white/10 pt-32 pb-4 font-mono text-xs text-white/50 max-w-7xl px-6 lg:px-10 lg:pt-40">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full" style={{ backgroundColor: MAGENTA }} />
               <span>APPROVED GOVERNMENT CONTRACTOR // MH REGION</span>
@@ -204,11 +160,11 @@ export default function Home() {
               <span>LAT 16.8524º N &nbsp; LON 73.5182º E &nbsp; // &nbsp; LANJA - RAJAPUR</span>
             </div>
             <div>
-              <span>EST. 1984</span>
+              <span>EST. {company.established}</span>
             </div>
           </div>
 
-          <div className="relative z-10 mx-auto flex min-h-[calc(92svh-140px)] max-w-[1400px] flex-col justify-end px-6 pb-16 pt-12 sm:px-10 lg:px-20">
+          <div className="relative z-10 mx-auto flex min-h-[calc(92svh-140px)] flex-col justify-end pb-16 pt-12 max-w-7xl px-6 lg:px-10">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -229,7 +185,7 @@ export default function Home() {
 
               <motion.h1
                 variants={slowReveal}
-                className="max-w-5xl text-5xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.5rem] lg:leading-[1.05]"
+                className="max-w-5xl text-5xl font-black uppercase leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-8xl"
               >
                 TOTAL CONTROL OF <br />
                 <span style={{ color: MAGENTA }}>CIVIL INFRASTRUCTURE</span>
@@ -248,14 +204,13 @@ export default function Home() {
                 <div className="flex flex-wrap items-center gap-4">
                   <a
                     href="#projects"
-                    className="inline-flex items-center justify-center rounded-lg px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white transition-all duration-300 hover:brightness-110"
-                    style={{ backgroundColor: MAGENTA }}
+                    className={btnPrimary}
                   >
-                    View Project Ledger
+                    View Project Ledger →
                   </a>
                   <a
                     href="#contact"
-                    className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-white transition-all hover:bg-white/10"
+                    className={btnOutline}
                   >
                     Tender Desk →
                   </a>
@@ -269,7 +224,7 @@ export default function Home() {
             KEY METRICS (SiteAssist Clean Strip in Logo Theme)
         ========================================================= */}
         <section className="border-b border-[#E4E6EB] bg-white py-14">
-          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
               {stats.map((s, index) => (
                 <Reveal key={s.label} delay={index * 0.08}>
@@ -278,7 +233,9 @@ export default function Home() {
                       {s.num}
                     </span>
                     <h3 className="mt-1 text-sm font-semibold text-[#111318]">{s.label}</h3>
+                    {s.caption && (
                     <p className="text-xs text-[#555A65]">{s.caption}</p>
+                  )}
                   </div>
                 </Reveal>
               ))}
@@ -289,13 +246,13 @@ export default function Home() {
         {/* =========================================================
             STATEMENT / PROFILE
         ========================================================= */}
-        <section id="about" className="py-24 sm:py-32">
-          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+        <section id="about" className="py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
               <Reveal>
                 <div>
                   <SiteBadge label="• OPERATIONAL PROFILE" />
-                  <h2 className="text-4xl font-bold tracking-tight text-[#111318] sm:text-5xl md:text-6xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl text-[#111318]">
                     Four decades of consistent public delivery.
                   </h2>
 
@@ -311,7 +268,7 @@ export default function Home() {
                       <span className="font-mono font-semibold text-[#111318] block">
                         ESTABLISHED
                       </span>
-                      1984 in Lanja, Maharashtra
+                      {company.established} in Lanja, Maharashtra
                     </div>
                     <div>
                       <span className="font-mono font-semibold text-[#111318] block">
@@ -335,14 +292,14 @@ export default function Home() {
                     <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white">
                       <div>
                         <span className="font-mono text-xs" style={{ color: MAGENTA }}>
-                          CLASS IA CONTRACTOR
+                          PWD REGISTERED
                         </span>
                         <h4 className="text-xl font-bold text-white">
-                          Ratnagiri Infrastructure Unit
+                          {company.name}
                         </h4>
                       </div>
                       <span className="rounded bg-white/20 px-2 py-1 font-mono text-[10px] backdrop-blur-sm">
-                        REG: PWD // 1984
+                        EST. {company.established}
                       </span>
                     </div>
                   </div>
@@ -355,13 +312,13 @@ export default function Home() {
         {/* =========================================================
             SOLUTIONS: SiteAssist Sync Hover Rail (Magenta Accents)
         ========================================================= */}
-        <section id="services" className="border-b border-[#E4E6EB] bg-[#F4F5F8] py-24 sm:py-32">
-          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+        <section id="services" className="border-b border-[#E4E6EB] bg-[#F4F5F8] py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="mb-14 flex flex-col justify-between gap-6 border-b border-[#E4E6EB] pb-8 md:flex-row md:items-end">
                 <div>
                   <SiteBadge label="• WHAT WE DO" />
-                  <h2 className="text-4xl font-bold tracking-tight text-[#111318] sm:text-5xl md:text-6xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl text-[#111318]">
                     Engineered solutions.
                   </h2>
                 </div>
@@ -406,7 +363,7 @@ export default function Home() {
                         )}
                       </div>
 
-                      <h3 className="mt-2 text-2xl font-bold tracking-tight text-[#111318] md:text-3xl">
+                      <h3 className="text-xl font-black uppercase sm:text-2xl mt-2 text-[#111318]">
                         {svc.title}
                       </h3>
 
@@ -459,13 +416,13 @@ export default function Home() {
         {/* =========================================================
             FLEET REEL: SiteAssist Module Reel Animation
         ========================================================= */}
-        <section id="machinery" className="overflow-hidden py-24 sm:py-32">
-          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+        <section id="machinery" className="overflow-hidden py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="mb-12 flex flex-col justify-between gap-6 border-b border-[#E4E6EB] pb-8 md:flex-row md:items-end">
                 <div>
                   <SiteBadge label="• FLEET & MODULES" />
-                  <h2 className="text-4xl font-bold tracking-tight text-[#111318] sm:text-5xl md:text-6xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl text-[#111318]">
                     Dedicated assets.
                   </h2>
                 </div>
@@ -507,13 +464,12 @@ export default function Home() {
                     />
                   </div>
 
-                  <h3 className="text-xl font-bold tracking-tight text-[#111318]">
+                  <h3 className="text-xl font-black uppercase sm:text-2xl text-[#111318]">
                     {item.name}
                   </h3>
                   <p className="mt-1 font-mono text-xs font-semibold" style={{ color: MAGENTA }}>
                     {item.spec}
                   </p>
-                  <p className="mt-2 text-xs text-[#555A65]">{item.role}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -523,18 +479,18 @@ export default function Home() {
         {/* =========================================================
             PRODUCTION PLANTS & FACILITIES
         ========================================================= */}
-        <section id="plants" className="border-t border-[#E4E6EB] bg-[#F4F5F8] py-24 sm:py-32">
-          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+        <section id="plants" className="border-t border-[#E4E6EB] bg-[#F4F5F8] py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
               <Reveal>
                 <div>
                   <SiteBadge label="• PLANT INFRASTRUCTURE" />
-                  <h2 className="text-4xl font-bold tracking-tight text-[#111318] sm:text-5xl md:text-6xl">
-                    Captive material plants.
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl text-[#111318]">
+                    Material plants.
                   </h2>
                   <p className="mt-6 text-base leading-relaxed text-[#555A65]">
-                    Zero third-party bottlenecks. Direct manufacturing of verified bituminous mix,
-                    controlled aggregate crushing, and ready-mix concrete at Waghangaon.
+                    YASH CONSTRUCTION operates an asphalt plant, crusher plant, quarry and RMC
+                    plant, with its plant infrastructure at Waghangaon, Tal-Lanja.
                   </p>
 
                   <div className="mt-8 divide-y divide-[#E4E6EB] rounded-xl border border-[#E4E6EB] bg-white">
@@ -566,7 +522,7 @@ export default function Home() {
                       <span className="font-mono text-xs" style={{ color: MAGENTA }}>
                         CENTRAL PROCESSING HUB
                       </span>
-                      <h3 className="text-2xl font-bold text-white">
+                      <h3 className="text-xl font-black uppercase sm:text-2xl text-white">
                         Waghangaon Operations Base
                       </h3>
                       <p className="font-mono text-xs text-white/70">
@@ -583,27 +539,24 @@ export default function Home() {
         {/* =========================================================
             CREDENTIALS
         ========================================================= */}
-        <section className="border-t border-[#E4E6EB] bg-white py-20">
-          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+        <section className="border-t border-[#E4E6EB] bg-white py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal>
               <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
                 <div>
                   <SiteBadge label="• STATUTORY COMPLIANCE" />
-                  <h2 className="text-3xl font-bold tracking-tight text-[#111318] sm:text-4xl">
+                  <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl text-[#111318]">
                     Accreditations & registrations.
                   </h2>
                 </div>
-                <p className="text-xs text-[#555A65]">Fully certified for state & central bids.</p>
+                <p className="text-xs text-[#555A65]">PWD, GST, MSME / Udyam and partnership registrations.</p>
               </div>
             </Reveal>
 
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {[
-                { title: "PWD Registration", sub: "Class IA Contractor" },
-                { title: "MSME / Udyam", sub: "Registered Enterprise" },
-                { title: "GST Compliant", sub: "Verified Entity" },
-                { title: "Partnership Act", sub: "Registered Since 1984" },
-              ].map((c) => (
+              {company.registrations
+                .map((r) => ({ title: r.title, sub: r.label }))
+                .map((c) => (
                 <div
                   key={c.title}
                   className="rounded-xl border border-[#E4E6EB] bg-[#F4F5F8] p-5 transition-colors hover:border-[#E41B76]"
@@ -624,21 +577,21 @@ export default function Home() {
         ========================================================= */}
         <section
           id="contact"
-          className="border-t border-[#E4E6EB] bg-[#111318] py-28 text-white sm:py-36"
+          className="border-t border-[#E4E6EB] bg-[#111318] py-20 lg:py-28 text-white"
         >
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             variants={slowReveal}
-            className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20"
+            className="mx-auto max-w-7xl px-6 lg:px-10"
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3.5 py-1 text-xs text-white/80">
               <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: MAGENTA }} />
               Direct Tender & Partner Inquiries
             </div>
 
-            <h2 className="mt-8 max-w-4xl text-5xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
+            <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl mt-8 max-w-4xl text-white">
               Let's talk about your <br />
               <span style={{ color: MAGENTA }}>next project.</span>
             </h2>
@@ -648,25 +601,24 @@ export default function Home() {
               tenders, or direct hot-mix supply.
             </p>
 
-            <div className="mt-12 flex flex-wrap gap-4 font-mono text-xs tracking-wider">
+            <div className="mt-12 flex flex-wrap gap-4">
               <a
-                href="tel:+917798763555"
-                className="rounded-lg px-8 py-4 font-bold text-white transition-all hover:brightness-110"
-                style={{ backgroundColor: MAGENTA }}
+                href={company.contact.primaryPhone.href}
+                className={btnPrimary}
               >
-                Call Office
+                Call Office →
               </a>
               <a
-                href="https://wa.me/917798763555"
+                href={company.contact.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg border border-white/20 bg-white/5 px-8 py-4 font-bold transition-all hover:border-[#E41B76] hover:text-[#E41B76]"
+                className={btnOutline}
               >
                 WhatsApp Desk
               </a>
               <a
-                href="mailto:yash_const@rediffmail.com"
-                className="rounded-lg border border-white/20 bg-white/5 px-8 py-4 font-bold transition-all hover:border-[#E41B76] hover:text-[#E41B76]"
+                href={company.contact.emailHref}
+                className={btnOutline}
               >
                 Dispatch Email
               </a>
