@@ -231,8 +231,8 @@ export default function Home() {
                 variants={slowReveal}
                 className="max-w-5xl text-5xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.5rem] lg:leading-[1.05]"
               >
-                Total control of <br />
-                <span style={{ color: MAGENTA }}>civil infrastructure.</span>
+                TOTAL CONTROL OF <br />
+                <span style={{ color: MAGENTA }}>CIVIL INFRASTRUCTURE</span>
               </motion.h1>
 
               <motion.div

@@ -1,0 +1,588 @@
+"use client";
+
+import {
+  motion,
+  type Variants,
+} from "motion/react";
+
+import Navbar from "../components/Navbar";
+
+const MAGENTA = "#E41B76";
+const DARK = "#111318";
+const MUTED = "#555A65";
+const BORDER = "#E4E6EB";
+
+const reveal: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.85,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
+const slowReveal: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 60,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.1,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
+function Reveal({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      className={className}
+      variants={reveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{
+        once: true,
+        amount: 0.15,
+      }}
+      transition={{
+        delay,
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className="mb-5 flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em]"
+      style={{ color: MAGENTA }}
+    >
+      <span
+        className="h-[2px] w-8"
+        style={{ backgroundColor: MAGENTA }}
+      />
+      {children}
+    </div>
+  );
+}
+
+const values = [
+  {
+    number: "01",
+    title: "Integrity",
+    text: "Conducting construction and contracting work with transparency, responsibility and professional discipline.",
+  },
+  {
+    number: "02",
+    title: "Safety",
+    text: "Maintaining a strong focus on safe working practices across construction sites and operations.",
+  },
+  {
+    number: "03",
+    title: "Quality",
+    text: "Delivering construction work with attention to materials, workmanship and project requirements.",
+  },
+  {
+    number: "04",
+    title: "Customer Satisfaction",
+    text: "Building long-term relationships through dependable execution and responsible project delivery.",
+  },
+];
+
+const projectTypes = [
+  "Roads",
+  "Bridges",
+  "Residential",
+  "Commercial",
+  "Government Buildings",
+];
+
+const partners = [
+  {
+    name: "Chandrashekhar Sitaram Bhingarde",
+    role: "Partner",
+    image: "/images/partners/chandrashekhar.jpg",
+  },
+  {
+    name: "Sudhir Sitaram Bhingarde",
+    role: "Partner",
+    image: "/images/partners/sudhir.jpg",
+  },
+  {
+    name: "Sandip Sitaram Bhingarde",
+    role: "Partner",
+    image: "/images/partners/sandip.jpg",
+  },
+];
+
+export default function AboutPage() {
+  return (
+    <>
+      {/* <Navbar /> */}
+
+      <main
+        className="overflow-hidden bg-white text-[#111318] antialiased"
+        style={{
+          color: DARK,
+        }}
+      >
+        {/* =====================================================
+            PAGE HERO
+        ===================================================== */}
+        <section className="relative overflow-hidden bg-[#111318] pt-20 text-white">
+          <div className="mx-auto flex min-h-[70svh] max-w-[1500px] flex-col justify-end px-6 pb-16 sm:px-10 md:px-16 lg:px-20">
+            <div className="absolute inset-0 opacity-[0.08]">
+              <div className="absolute left-[15%] top-0 h-full w-px bg-white" />
+              <div className="absolute left-[40%] top-0 h-full w-px bg-white" />
+              <div className="absolute right-[20%] top-0 h-full w-px bg-white" />
+            </div>
+
+            <div className="absolute right-[-18%] top-[-35%] h-[700px] w-[700px] rounded-full border border-white/10" />
+
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={slowReveal}
+              className="relative z-10"
+            >
+              <SectionLabel>Company Profile</SectionLabel>
+
+              <h1 className="max-w-6xl text-6xl font-bold uppercase leading-[0.9] tracking-tight sm:text-7xl md:text-8xl lg:text-[9rem]">
+                About
+                <br />
+                <span style={{ color: MAGENTA }}>
+                  YASH.
+                </span>
+              </h1>
+
+              <div className="mt-10 flex max-w-4xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
+                <p className="max-w-2xl text-base leading-7 text-white/65 md:text-lg">
+                  A construction and infrastructure partnership firm
+                  established in 1984, operating across Lanja Taluka,
+                  Rajapur Taluka and Ratnagiri District.
+                </p>
+
+                <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/40">
+                  EST. 1984
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* =====================================================
+            COMPANY OVERVIEW
+        ===================================================== */}
+        <section className="px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
+          <div className="mx-auto grid max-w-[1400px] gap-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
+            <Reveal>
+              <div>
+                <SectionLabel>Who We Are</SectionLabel>
+
+                <h2 className="max-w-lg text-5xl font-bold uppercase leading-[0.9] tracking-tight sm:text-6xl md:text-7xl">
+                  Four decades
+                  <br />
+                  of <span style={{ color: MAGENTA }}>execution.</span>
+                </h2>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.12}>
+              <div>
+                <p className="text-lg leading-8 text-[#555A65] md:text-xl">
+                  YASH CONSTRUCTION is a partnership firm established in
+                  1984 with extensive experience in construction and
+                  infrastructure works. The company operates across Lanja
+                  Taluka, Rajapur Taluka and Ratnagiri District, undertaking
+                  projects across road, bridge, residential, commercial and
+                  government building sectors.
+                </p>
+
+                <p className="mt-7 text-lg leading-8 text-[#555A65] md:text-xl">
+                  Over its 42 years of operations, the company has developed
+                  capabilities across multiple stages of construction,
+                  supported by its own machinery, production facilities and
+                  construction resources.
+                </p>
+
+                <p className="mt-7 text-lg leading-8 text-[#555A65] md:text-xl">
+                  Its project capabilities include road construction,
+                  earthwork, excavation, drainage work, bridge construction,
+                  building construction, asphalt production, aggregate
+                  processing and ready-mix concrete operations.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* =====================================================
+            COMPANY DATA
+        ===================================================== */}
+        <section className="border-y border-[#E4E6EB] bg-[#F7F7F8]">
+          <div className="mx-auto grid max-w-[1400px] md:grid-cols-2">
+            <Reveal>
+              <div className="border-b border-[#E4E6EB] p-8 sm:p-10 md:border-b-0 md:border-r md:p-16">
+                <SectionLabel>Company Details</SectionLabel>
+
+                <div className="space-y-0">
+                  <div className="border-t border-[#E4E6EB] py-5">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-[#555A65]">
+                      Company
+                    </span>
+                    <span className="mt-2 block text-xl font-semibold uppercase">
+                      YASH CONSTRUCTION
+                    </span>
+                  </div>
+
+                  <div className="border-t border-[#E4E6EB] py-5">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-[#555A65]">
+                      Established
+                    </span>
+                    <span className="mt-2 block text-xl font-semibold">
+                      1984
+                    </span>
+                  </div>
+
+                  <div className="border-t border-[#E4E6EB] py-5">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-[#555A65]">
+                      Organization
+                    </span>
+                    <span className="mt-2 block text-xl font-semibold">
+                      Partnership Firm
+                    </span>
+                  </div>
+
+                  <div className="border-t border-[#E4E6EB] py-5">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-[#555A65]">
+                      Experience
+                    </span>
+                    <span
+                      className="mt-2 block text-xl font-semibold"
+                      style={{ color: MAGENTA }}
+                    >
+                      42 Years
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.12}>
+              <div className="p-8 sm:p-10 md:p-16">
+                <SectionLabel>Operating Region</SectionLabel>
+
+                <div className="flex min-h-full flex-col justify-between">
+                  <div>
+                    <h3 className="text-4xl font-bold uppercase leading-none sm:text-5xl">
+                      Lanja
+                      <br />
+                      Rajapur
+                      <br />
+                      Ratnagiri
+                    </h3>
+
+                    <p className="mt-8 max-w-md text-base leading-7 text-[#555A65]">
+                      The company operates across Lanja Taluka, Rajapur
+                      Taluka and the wider Ratnagiri District in Maharashtra.
+                    </p>
+                  </div>
+
+                  <div className="mt-12 border-t border-[#E4E6EB] pt-6">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#555A65]">
+                      Registered Office
+                    </span>
+
+                    <p className="mt-3 text-sm font-medium uppercase leading-6">
+                      YASH CONSTRUCTION
+                      <br />
+                      Lanja, Tal-Lanja
+                      <br />
+                      Dist-Ratnagiri, Maharashtra
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* =====================================================
+            PROJECT TYPES
+        ===================================================== */}
+        <section className="bg-[#111318] px-6 py-24 text-white sm:px-10 md:px-16 md:py-32 lg:px-20">
+          <div className="mx-auto max-w-[1400px]">
+            <Reveal>
+              <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-end">
+                <div>
+                  <SectionLabel>Experience</SectionLabel>
+
+                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                    Built across
+                    <br />
+                    <span style={{ color: MAGENTA }}>
+                      sectors.
+                    </span>
+                  </h2>
+                </div>
+
+                <p className="max-w-xl text-base leading-7 text-white/55">
+                  Construction capabilities spanning transportation
+                  infrastructure, buildings and supporting civil works.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="mt-16 border-t border-white/10">
+              {projectTypes.map((type, index) => (
+                <motion.div
+                  key={type}
+                  initial={{
+                    opacity: 0,
+                    x: -30,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    x: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                    amount: 0.2,
+                  }}
+                  transition={{
+                    duration: 0.7,
+                    delay: index * 0.08,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="group flex items-center justify-between border-b border-white/10 py-7"
+                >
+                  <div className="flex items-center gap-6">
+                    <span
+                      className="font-mono text-xs"
+                      style={{ color: MAGENTA }}
+                    >
+                      0{index + 1}
+                    </span>
+
+                    <span className="text-2xl font-semibold uppercase tracking-tight transition-colors duration-300 group-hover:text-[#E41B76] sm:text-3xl md:text-4xl">
+                      {type}
+                    </span>
+                  </div>
+
+                  <span
+                    className="text-xl opacity-30 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-100"
+                    style={{ color: MAGENTA }}
+                  >
+                    →
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================
+            VALUES
+        ===================================================== */}
+        <section className="px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
+          <div className="mx-auto max-w-[1400px]">
+            <Reveal>
+              <div className="max-w-2xl">
+                <SectionLabel>Core Values</SectionLabel>
+
+                <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                  How we
+                  <br />
+                  <span style={{ color: MAGENTA }}>
+                    work.
+                  </span>
+                </h2>
+              </div>
+            </Reveal>
+
+            <div className="mt-16 grid border-t border-[#E4E6EB] md:grid-cols-2">
+              {values.map((value, index) => (
+                <motion.div
+                  key={value.number}
+                  initial={{
+                    opacity: 0,
+                    y: 35,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                    amount: 0.2,
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.08,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className={`group border-b border-[#E4E6EB] p-7 sm:p-10 ${
+                    index % 2 === 0
+                      ? "md:border-r"
+                      : ""
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-6">
+                    <span
+                      className="font-mono text-xs font-bold"
+                      style={{ color: MAGENTA }}
+                    >
+                      {value.number}
+                    </span>
+
+                    <span
+                      className="text-2xl opacity-20 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"
+                      style={{ color: MAGENTA }}
+                    >
+                      ↗
+                    </span>
+                  </div>
+
+                  <h3 className="mt-12 text-3xl font-bold uppercase">
+                    {value.title}
+                  </h3>
+
+                  <p className="mt-4 max-w-lg text-sm leading-7 text-[#555A65]">
+                    {value.text}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================
+            PARTNERS
+        ===================================================== */}
+        <section className="bg-[#F7F7F8] px-6 py-24 sm:px-10 md:px-16 md:py-32 lg:px-20">
+          <div className="mx-auto max-w-[1400px]">
+            <Reveal>
+              <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-end">
+                <div>
+                  <SectionLabel>Leadership</SectionLabel>
+
+                  <h2 className="text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-7xl">
+                    The
+                    <br />
+                    <span style={{ color: MAGENTA }}>
+                      Partners.
+                    </span>
+                  </h2>
+                </div>
+
+                <p className="max-w-xl text-base leading-7 text-[#555A65]">
+                  YASH CONSTRUCTION is operated as a partnership firm led by
+                  its partners.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="mt-16 grid gap-6 md:grid-cols-3">
+              {partners.map((partner, index) => (
+                <Reveal key={partner.name} delay={index * 0.1}>
+                  <article className="group overflow-hidden border border-[#E4E6EB] bg-white">
+                    <div className="relative aspect-[4/5] overflow-hidden bg-[#E5E5E7]">
+                      <img
+                        src={partner.image}
+                        alt={partner.name}
+                        className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
+                      />
+
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-6 pt-20">
+                        <span
+                          className="font-mono text-[10px] font-bold uppercase tracking-[0.15em]"
+                          style={{ color: MAGENTA }}
+                        >
+                          Partner
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold uppercase leading-tight">
+                        {partner.name}
+                      </h3>
+
+                      <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.15em] text-[#555A65]">
+                        {partner.role}
+                      </p>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal delay={0.15}>
+              <div className="mt-16 border-t border-[#E4E6EB] pt-8">
+                <p className="max-w-3xl text-sm leading-7 text-[#555A65]">
+                  Founder and partner message will be added once the approved
+                  company statement and partner photographs are provided.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* =====================================================
+            ABOUT CTA
+        ===================================================== */}
+        <section className="bg-[#111318] px-6 py-24 text-white sm:px-10 md:px-16 md:py-32 lg:px-20">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.25,
+            }}
+            variants={slowReveal}
+            className="mx-auto max-w-[1400px]"
+          >
+            <SectionLabel>Next</SectionLabel>
+
+            <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+              <h2 className="max-w-4xl text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-8xl">
+                See what we
+                <br />
+                <span style={{ color: MAGENTA }}>
+                  build.
+                </span>
+              </h2>
+
+              <a
+                href="/projects"
+                className="inline-flex w-fit items-center gap-4 border border-white/20 px-6 py-4 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-all duration-300 hover:border-[#E41B76] hover:bg-[#E41B76] hover:text-white"
+              >
+                Explore Projects
+                <span>→</span>
+              </a>
+            </div>
+          </motion.div>
+        </section>
+      </main>
+    </>
+  );
+}

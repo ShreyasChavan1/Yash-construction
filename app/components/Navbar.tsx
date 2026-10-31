@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import Logo from "./Logo";
 
+
 const MAGENTA = "#E41B76";
 
 const navItems = [
@@ -16,6 +17,10 @@ const navItems = [
   { label: "Plants", href: "/plants" },
   { label: "Credentials", href: "/credentials" },
   { label: "Contact", href: "/contact" },
+  {
+  label: "Gallery",
+  href: "/gallery",
+},
 ];
 
 export default function Navbar() {
@@ -35,13 +40,13 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
+        className={`fixed left-0 right-0 top-0 z-[9999] transition-all duration-300 ${
           scrolled
             ? "border-b border-black/10 bg-white/95 shadow-md backdrop-blur-md"
             : "border-b border-black/5 bg-white/80 backdrop-blur-sm"
         }`}
       >
-        <nav className="mx-auto flex h-20 max-w-[1500px] items-center justify-between px-6 sm:px-10 md:px-16 lg:px-20">
+        <nav className="mx-auto flex h-20 max-w-[1500px] items-center justify-between px-6 sm:px-10 md:px-16 lg:px-20 ">
           {/* LOGO */}
           <Link
             href="/"

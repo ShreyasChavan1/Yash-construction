@@ -24,3 +24,53 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Selection */
+::selection {
+  background: #e41b76;
+  color: white;
+}
+
+/* Better focus states */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #e41b76;
+  outline-offset: 4px;
+}
+
+/* Hide scrollbar for horizontal navigation areas */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Construction-style image hover */
+.image-hover {
+  overflow: hidden;
+}
+
+.image-hover img {
+  transition: transform 700ms ease;
+}
+
+.image-hover:hover img {
+  transform: scale(1.04);
+}
+
+/* Prevent accidental horizontal overflow */
+img {
+  max-width: 100%;
+}
