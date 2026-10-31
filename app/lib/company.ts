@@ -55,6 +55,23 @@ export const company = {
 
   areasOfOperation,
   areasOfOperationText: "Lanja Taluka, Rajapur Taluka & Ratnagiri District",
+  /** Same list as a sentence fragment, for running prose. */
+  areasSentence: "Lanja Taluka, Rajapur Taluka and Ratnagiri District",
+  areaNames: ["Lanja", "Rajapur", "Ratnagiri"],
+  areaNamesText: "Lanja, Rajapur and Ratnagiri",
+
+  /** Where the company is based (registered office). */
+  location: {
+    town: "Lanja",
+    taluka: "Tal-Lanja",
+    district: "Dist-Ratnagiri",
+    districtName: "Ratnagiri",
+    state: "Maharashtra",
+  },
+
+  /** Short description built only from confirmed facts. Used in the footer. */
+  blurb:
+    "Construction and infrastructure works across Lanja Taluka, Rajapur Taluka and Ratnagiri District, with experience spanning roads, bridges, buildings, earthwork and government projects.",
 
   /** Confirmed project types. */
   projectTypes: ["Roads", "Bridges", "Residential", "Commercial", "Government Buildings"],

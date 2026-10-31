@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, type Variants } from "motion/react";
+import { galleryCategories, galleryItems, galleryShotList } from "../lib/gallery";
 
 
 const reveal: Variants = {
@@ -22,33 +23,7 @@ const slowReveal: Variants = {
   },
 };
 
-type GalleryItem = {
-  src: string;
-  title: string;
-  category: string;
-};
-
-const galleryItems :GalleryItem[] = [
-  // Add real client images here as they become available.
-  // Example:
-  // {
-  //   src: "/images/gallery/office-1.jpg",
-  //   title: "YASH CONSTRUCTION Office",
-  //   category: "Office",
-  // },
-];
-
-const categories = [
-  "Office",
-  "Team",
-  "Machinery",
-  "Construction Sites",
-  "Projects",
-  "Plants",
-  "Quarry",
-  "Warehouse",
-  "Drone",
-];
+const categories = galleryCategories;
 
 export default function GalleryPage() {
   return (
@@ -199,20 +174,7 @@ export default function GalleryPage() {
             </div>
 
             <div className="grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2">
-              {[
-                "Office & Team",
-                "Heavy Machinery",
-                "Road Construction",
-                "Bridge Works",
-                "Asphalt Plant",
-                "Crusher Plant",
-                "RMC Plant",
-                "Quarry Operations",
-                "Warehouse",
-                "Completed Projects",
-                "Construction Sites",
-                "Drone Photography",
-              ].map((item, index) => (
+              {galleryShotList.map((item, index) => (
                 <div
                   key={item}
                   className="bg-[#181A20] px-6 py-6 transition hover:bg-[#E41B76]"

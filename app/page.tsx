@@ -10,9 +10,9 @@ import {
   type Variants,
 } from "motion/react";
 import { company } from "./lib/company";
-import { featuredServices } from "./lib/services";
+import { featuredServices, governmentContracts } from "./lib/services";
 import { machinery as machineryData, formatQuantity } from "./lib/machinery";
-import { plants as plantsData, getPlantSpecification } from "./lib/plants";
+import { plants as plantsData, plantSite, getPlantSpecification } from "./lib/plants";
 
 // Color System derived directly from Yash Construction Logo Vector
 const MAGENTA = "#E41B76"; // Primary Signature Accent
@@ -136,7 +136,7 @@ export default function Home() {
         ========================================================= */}
         <section
           id="home"
-          className="relative min-h-[92svh] overflow-hidden bg-[#111318] text-white"
+          className="relative flex min-h-[100svh] flex-col overflow-hidden bg-[#111318] text-white"
         >
           <motion.div
             className="absolute inset-0"
@@ -151,20 +151,20 @@ export default function Home() {
           </motion.div>
 
           {/* Telemetry Bar */}
-          <div className="relative z-10 mx-auto flex items-center justify-between border-b border-white/10 pt-32 pb-4 font-mono text-xs text-white/50 max-w-7xl px-6 lg:px-10 lg:pt-40">
+          <div className="relative z-10 mx-auto flex items-center justify-between border-b border-white/10 pt-28 pb-4 font-mono text-xs text-white/50 max-w-7xl px-6 lg:px-10 lg:pt-32">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full" style={{ backgroundColor: MAGENTA }} />
-              <span>APPROVED GOVERNMENT CONTRACTOR // MH REGION</span>
+              <span>PWD REGISTERED // {company.location.state.toUpperCase()}</span>
             </div>
             <div className="hidden sm:block">
-              <span>LAT 16.8524º N &nbsp; LON 73.5182º E &nbsp; // &nbsp; LANJA - RAJAPUR</span>
+              <span>LAT {company.maps.latitude.toFixed(4)}º N &nbsp; LON {company.maps.longitude.toFixed(4)}º E &nbsp; // &nbsp; {company.location.town.toUpperCase()}</span>
             </div>
             <div>
               <span>EST. {company.established}</span>
             </div>
           </div>
 
-          <div className="relative z-10 mx-auto flex min-h-[calc(92svh-140px)] flex-col justify-end pb-16 pt-12 max-w-7xl px-6 lg:px-10">
+          <div className="relative z-10 mx-auto flex w-full flex-1 flex-col justify-end pb-10 pt-8 max-w-7xl px-6 lg:px-10 lg:pb-14">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -177,7 +177,7 @@ export default function Home() {
               style={{ y: heroTextY }}
             >
               <motion.div variants={reveal}>
-                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/80 backdrop-blur-md">
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/80 backdrop-blur-md">
                   <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: MAGENTA }} />
                   Heavy Civil & Highway Infrastructure
                 </div>
@@ -185,7 +185,7 @@ export default function Home() {
 
               <motion.h1
                 variants={slowReveal}
-                className="max-w-5xl text-5xl font-black uppercase leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-8xl"
+                className="max-w-6xl text-[clamp(1.75rem,8.2vw,3rem)] font-black uppercase leading-[0.95] tracking-tight text-white md:text-6xl lg:text-[clamp(3.5rem,min(5.6vw,11vh),5.25rem)]"
               >
                 TOTAL CONTROL OF <br />
                 <span style={{ color: MAGENTA }}>CIVIL INFRASTRUCTURE</span>
@@ -193,12 +193,12 @@ export default function Home() {
 
               <motion.div
                 variants={reveal}
-                className="mt-8 flex max-w-4xl flex-col gap-8 md:flex-row md:items-end md:justify-between"
+                className="mt-6 flex max-w-4xl flex-col gap-6 md:flex-row md:items-end md:justify-between lg:mt-8"
               >
                 <p className="max-w-xl text-base leading-relaxed text-white/70 md:text-lg">
-                  Delivering end-to-end highway construction, bridge civil works, and departmental
-                  contracts across Ratnagiri District. Powered by captive asphalt plants, aggregate
-                  crushers, and heavy fleet readiness.
+                  {company.type} established in {company.established}, delivering construction and
+                  infrastructure works across {company.areasSentence}, with its own asphalt,
+                  crusher and RMC plants and a machinery fleet.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-4">
@@ -253,14 +253,13 @@ export default function Home() {
                 <div>
                   <SiteBadge label="• OPERATIONAL PROFILE" />
                   <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl text-[#111318]">
-                    Four decades of consistent public delivery.
+                    {company.experienceYears} years of construction experience.
                   </h2>
 
                   <p className="mt-6 text-base leading-relaxed text-[#555A65] md:text-lg">
-                    Yash Construction is an established civil engineering partnership firm. We
-                    operate as direct Class IA registered contractors for government bodies and
-                    regional infrastructure authorities, maintaining direct oversight over materials,
-                    plant extraction, and heavy field fleets.
+                    {company.name} is a {company.type.toLowerCase()} established in {company.established}, working
+                    across {company.areasSentence}. Government contract categories include{" "}
+                    {governmentContracts.join(", ")}.
                   </p>
 
                   <div className="mt-8 grid grid-cols-2 gap-4 border-t border-[#E4E6EB] pt-6 text-xs text-[#555A65]">
@@ -268,13 +267,13 @@ export default function Home() {
                       <span className="font-mono font-semibold text-[#111318] block">
                         ESTABLISHED
                       </span>
-                      {company.established} in Lanja, Maharashtra
+                      {company.established} in {company.location.town}, {company.location.state}
                     </div>
                     <div>
                       <span className="font-mono font-semibold text-[#111318] block">
-                        SPECIALIZATION
+                        PROJECT TYPES
                       </span>
-                      High-Volume Highway & Pavements
+                      {company.projectTypes.join(", ")}
                     </div>
                   </div>
                 </div>
@@ -490,7 +489,7 @@ export default function Home() {
                   </h2>
                   <p className="mt-6 text-base leading-relaxed text-[#555A65]">
                     YASH CONSTRUCTION operates an asphalt plant, crusher plant, quarry and RMC
-                    plant, with its plant infrastructure at Waghangaon, Tal-Lanja.
+                    plant, with its plant infrastructure at {plantSite.name}, {plantSite.taluka}.
                   </p>
 
                   <div className="mt-8 divide-y divide-[#E4E6EB] rounded-xl border border-[#E4E6EB] bg-white">
@@ -514,19 +513,19 @@ export default function Home() {
                   <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-neutral-900">
                     <img
                       src="/images/plants/asphalt-plant.jpg"
-                      alt="Waghangaon Plant Complex"
+                      alt={`${plantSite.name} plants`}
                       className="h-full w-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                     <div className="absolute bottom-6 left-6 right-6 text-white">
                       <span className="font-mono text-xs" style={{ color: MAGENTA }}>
-                        CENTRAL PROCESSING HUB
+                        PLANT SITE
                       </span>
                       <h3 className="text-xl font-black uppercase sm:text-2xl text-white">
-                        Waghangaon Operations Base
+                        {plantSite.name} Plants
                       </h3>
                       <p className="font-mono text-xs text-white/70">
-                        Supplying Lanja, Rajapur, and Ratnagiri Highway Networks.
+                        {plantSite.taluka}, {plantSite.district}, {plantSite.state}
                       </p>
                     </div>
                   </div>

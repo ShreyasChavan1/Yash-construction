@@ -1,19 +1,8 @@
 import Link from "next/link";
 import { company } from "../lib/company";
+import { footerLinks } from "../lib/navigation";
 
 const MAGENTA = "#E41B76";
-
-const quickLinks = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Projects", href: "/projects" },
-  { label: "Machinery", href: "/machinery" },
-  { label: "Plants", href: "/plants" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "Credentials", href: "/credentials" },
-  { label: "Contact", href: "/contact" },
-];
 
 export default function Footer() {
   return (
@@ -43,9 +32,7 @@ export default function Footer() {
             </div>
 
             <p className="mt-7 max-w-md text-sm leading-7 text-white/55">
-              Construction and infrastructure works across Lanja Taluka,
-              Rajapur Taluka and Ratnagiri District, with experience spanning
-              roads, bridges, buildings, earthwork and government projects.
+              {company.blurb}
             </p>
 
             <div className="mt-8">
@@ -71,7 +58,7 @@ export default function Footer() {
             </p>
 
             <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3">
-              {quickLinks.map((link) => (
+              {footerLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -138,11 +125,12 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between lg:px-10">
           <p>
-  © 2026 YASH CONSTRUCTION. All rights reserved.
-</p>
+            © 2026 YASH CONSTRUCTION. All rights
+            reserved.
+          </p>
 
           <p>
-            Established {company.established} · Lanja, Ratnagiri
+            Established {company.established} · {company.location.town}, {company.location.districtName}
           </p>
         </div>
       </div>

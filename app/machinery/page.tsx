@@ -6,6 +6,7 @@ import {
   type Variants,
 } from "motion/react";
 import { machinery as machineryData, formatQuantity } from "../lib/machinery";
+import { plantSite } from "../lib/plants";
 
 
 const MAGENTA = "#E41B76";
@@ -389,8 +390,8 @@ export default function MachineryPage() {
 
                 <p className="mt-8 max-w-xl text-base leading-7 text-[#555A65]">
                   The company's infrastructure also includes asphalt, crusher,
-                  RMC and quarry operations at Waghangaon, Tal-Lanja,
-                  Ratnagiri, Maharashtra.
+                  RMC and quarry operations at {plantSite.name}, {plantSite.taluka},
+                  {plantSite.district}, {plantSite.state}.
                 </p>
 
                 <Link
@@ -431,7 +432,7 @@ export default function MachineryPage() {
                   </span>
 
                   <span className="mt-1 block text-sm font-bold uppercase">
-                    Waghangaon
+                    {plantSite.name}
                   </span>
                 </div>
               </div>

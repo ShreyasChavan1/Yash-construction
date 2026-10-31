@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, type Variants } from "motion/react";
 import { company } from "../lib/company";
+import { exploreLinks } from "../lib/navigation";
 
 const MAGENTA = "#E41B76";
 
@@ -35,23 +36,7 @@ const contactDetails = [
   },
 ];
 
-const quickLinks = [
-  {
-    title: "Projects",
-    description: "Explore selected works and project capabilities.",
-    href: "/projects",
-  },
-  {
-    title: "Machinery",
-    description: "View the company's construction equipment.",
-    href: "/machinery",
-  },
-  {
-    title: "Credentials",
-    description: "Company registrations and professional credentials.",
-    href: "/credentials",
-  },
-];
+const quickLinks = exploreLinks;
 
 const reveal: Variants = {
   hidden: { opacity: 0, y: 45 },
@@ -145,8 +130,7 @@ export default function ContactPage() {
               </h2>
 
               <p className="mt-8 max-w-sm text-black/55 leading-relaxed">
-                YASH CONSTRUCTION operates across Lanja Taluka, Rajapur Taluka
-                and Ratnagiri District.
+                YASH CONSTRUCTION operates across {company.areasSentence}.
               </p>
 
             </div>
@@ -289,7 +273,7 @@ export default function ContactPage() {
                   </p>
 
                   <p className="mt-2 text-xs text-white/30">
-                    Lanja, Ratnagiri
+                    {company.location.town}, {company.location.districtName}
                   </p>
 
                 </div>

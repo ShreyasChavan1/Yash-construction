@@ -81,7 +81,7 @@ export default function CredentialsPage() {
 
           <p className="mt-8 max-w-2xl text-white/65 text-lg md:text-xl leading-relaxed">
             Registered, established and equipped to undertake construction
-            works across Lanja, Rajapur and Ratnagiri.
+            works across {company.areaNamesText}.
           </p>
 
         </motion.div>

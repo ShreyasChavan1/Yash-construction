@@ -20,6 +20,15 @@ export type Plant = {
 
 const WAGHANGAON = "Waghangaon, Tal-Lanja, Dist-Ratnagiri, Maharashtra";
 
+/** The site where the asphalt plant, crusher plant and quarry are located. */
+export const plantSite = {
+  name: "Waghangaon",
+  taluka: "Tal-Lanja",
+  district: "Dist-Ratnagiri",
+  state: "Maharashtra",
+  full: WAGHANGAON,
+};
+
 export const plants: Plant[] = [
   {
     slug: "asphalt-plant",

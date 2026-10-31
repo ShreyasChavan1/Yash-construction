@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, type Variants } from "motion/react";
 import Image from "next/image";
-import { plants as plantsData, getPlantSpecification } from "../lib/plants";
+import { plants as plantsData, plantSite, getPlantSpecification } from "../lib/plants";
 
 const MAGENTA = "#E41B76";
 
@@ -117,7 +117,7 @@ export default function PlantsPage() {
 
               <p className="mt-8 max-w-2xl text-lg md:text-xl text-black/60 leading-relaxed">
                 YASH CONSTRUCTION maintains plant and material infrastructure
-                at Waghangaon, Tal-Lanja, Dist-Ratnagiri, Maharashtra. These
+                at {plantSite.full}. These
                 facilities form part of the company's construction resources
                 across road, concrete and material-related works.
               </p>
@@ -255,12 +255,13 @@ export default function PlantsPage() {
               </p>
 
               <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">
-                WAGHANGAON
+                {plantSite.name}
               </h2>
 
               <p className="mt-6 text-black/60 max-w-xl leading-relaxed">
-                Tal-Lanja, Dist-Ratnagiri, Maharashtra.
+                {plantSite.taluka}, {plantSite.district}, {plantSite.state}.
               </p>
+
             </div>
 
             <div className="border-l-2 pl-8 md:pl-12" style={{ borderColor: MAGENTA }}>

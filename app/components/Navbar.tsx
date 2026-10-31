@@ -5,24 +5,10 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import Logo from "./Logo";
 import { company } from "../lib/company";
+import { navItems } from "../lib/navigation";
 
 
 const MAGENTA = "#E41B76";
-
-const navItems = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Projects", href: "/projects" },
-  { label: "Machinery", href: "/machinery" },
-  { label: "Plants", href: "/plants" },
-  { label: "Credentials", href: "/credentials" },
-  { label: "Contact", href: "/contact" },
-  {
-  label: "Gallery",
-  href: "/gallery",
-},
-];
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

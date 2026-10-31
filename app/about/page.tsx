@@ -143,8 +143,7 @@ export default function AboutPage() {
               <div className="mt-10 flex max-w-4xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
                 <p className="max-w-2xl text-base leading-7 text-white/65 md:text-lg">
                   A construction and infrastructure partnership firm
-                  established in {company.established}, operating across Lanja Taluka,
-                  Rajapur Taluka and Ratnagiri District.
+                  established in {company.established}, operating across {company.areasSentence}.
                 </p>
 
                 <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/40">
@@ -177,8 +176,7 @@ export default function AboutPage() {
                 <p className="text-lg leading-8 text-[#555A65] md:text-xl">
                   YASH CONSTRUCTION is a partnership firm established in
                   {company.established} with extensive experience in construction and
-                  infrastructure works. The company operates across Lanja
-                  Taluka, Rajapur Taluka and Ratnagiri District, undertaking
+                  infrastructure works. The company operates across {company.areasSentence}, undertaking
                   projects across road, bridge, residential, commercial and
                   government building sectors.
                 </p>
@@ -260,16 +258,16 @@ export default function AboutPage() {
                 <div className="flex min-h-full flex-col justify-between">
                   <div>
                     <h3 className="text-4xl font-bold uppercase leading-none sm:text-5xl">
-                      Lanja
-                      <br />
-                      Rajapur
-                      <br />
-                      Ratnagiri
+                      {company.areaNames.map((name, i) => (
+                        <span key={name}>
+                          {i > 0 && <br />}
+                          {name}
+                        </span>
+                      ))}
                     </h3>
 
                     <p className="mt-8 max-w-md text-base leading-7 text-[#555A65]">
-                      The company operates across Lanja Taluka, Rajapur
-                      Taluka and the wider Ratnagiri District in Maharashtra.
+                      The company operates across {company.areasSentence}.
                     </p>
                   </div>
 
@@ -281,9 +279,9 @@ export default function AboutPage() {
                     <p className="mt-3 text-sm font-medium uppercase leading-6">
                       YASH CONSTRUCTION
                       <br />
-                      Lanja, Tal-Lanja
+                      {company.location.town}, {company.location.taluka}
                       <br />
-                      Dist-Ratnagiri, Maharashtra
+                      {company.location.district}, {company.location.state}
                     </p>
                   </div>
                 </div>
