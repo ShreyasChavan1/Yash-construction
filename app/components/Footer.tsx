@@ -138,9 +138,8 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between lg:px-10">
           <p>
-            © {new Date().getFullYear()} YASH CONSTRUCTION. All rights
-            reserved.
-          </p>
+  © 2026 YASH CONSTRUCTION. All rights reserved.
+</p>
 
           <p>
             Established {company.established} · Lanja, Ratnagiri

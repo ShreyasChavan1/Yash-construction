@@ -628,7 +628,7 @@ export default function Home() {
               <div>
                 YASH CONSTRUCTION · LANJA, RATNAGIRI DISTRICT, MAHARASHTRA
               </div>
-              <div>© 1984 {new Date().getFullYear()} ALL RIGHTS RESERVED</div>
+              <div>© 2026 ALL RIGHTS RESERVED</div>
             </div>
           </motion.div>
         </section>
