@@ -1,8 +1,14 @@
 "use client";
 
-import Image from "next/image";
+import { useState } from "react";
+import SafeImage from "../components/SafeImage";
 import { motion, type Variants } from "motion/react";
-import { galleryCategories, galleryItems, galleryShotList } from "../lib/gallery";
+import {
+  galleryCategories,
+  galleryItems,
+  galleryShotList,
+  type GalleryCategory,
+} from "../lib/gallery";
 
 
 const reveal: Variants = {
@@ -26,6 +32,10 @@ const slowReveal: Variants = {
 const categories = galleryCategories;
 
 export default function GalleryPage() {
+  const [active, setActive] = useState<GalleryCategory | "All">("All");
+  const visibleItems =
+    active === "All" ? galleryItems : galleryItems.filter((item) => item.category === active);
+
   return (
     <>
    
@@ -88,17 +98,20 @@ export default function GalleryPage() {
       <section className="border-y border-black/10 bg-white">
         <div className="mx-auto max-w-7xl overflow-x-auto px-6 lg:px-10">
           <div className="flex min-w-max">
-            {categories.map((category, index) => (
-              <div
+            {(["All", ...categories] as const).map((category) => (
+              <button
                 key={category}
-                className={`border-r border-black/10 px-6 py-5 text-sm font-bold uppercase tracking-wide first:border-l ${
-                  index === 0
+                type="button"
+                aria-pressed={active === category}
+                onClick={() => setActive(category)}
+                className={`border-r border-black/10 px-6 py-5 text-sm font-bold uppercase tracking-wide transition-colors first:border-l ${
+                  active === category
                     ? "bg-[#E41B76] text-white"
-                    : "text-black/60"
+                    : "text-black/60 hover:text-black"
                 }`}
               >
                 {category}
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -107,18 +120,19 @@ export default function GalleryPage() {
       {/* GALLERY */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
         {galleryItems.length > 0 ? (
+          visibleItems.length > 0 ? (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {galleryItems.map((item, index) => (
+            {visibleItems.map((item, index) => (
               <div
                 key={`${item.title}-${index}`}
                 className="group overflow-hidden rounded-[2rem] bg-white"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
+                  <SafeImage
                     src={item.src}
                     alt={item.title}
-                    fill
-                    className="object-cover transition duration-700 group-hover:scale-105"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    className="transition duration-700 group-hover:scale-105"
                   />
 
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-6 pt-20">
@@ -134,6 +148,11 @@ export default function GalleryPage() {
               </div>
             ))}
           </div>
+          ) : (
+            <p className="rounded-[2rem] border border-black/10 bg-white px-6 py-16 text-center text-sm text-black/55">
+              No photographs in this category yet.
+            </p>
+          )
         ) : (
           <div className="rounded-[2rem] border border-black/10 bg-white px-6 py-20 text-center sm:px-12">
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#E41B76]/10">

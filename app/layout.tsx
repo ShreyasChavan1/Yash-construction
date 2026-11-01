@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+
 import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import { rootMetadata, localBusinessJsonLd } from "./lib/seo";
+import JsonLd from "./components/JsonLd";
 
 const jakartaSans = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -16,11 +18,12 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "YASH CONSTRUCTION | Infrastructure & Civil Engineering",
-  description:
-    "Class IA civil contracting firm specializing in highway paving, bridge works, and industrial plant operations across Ratnagiri District since 1984.",
-};
+// export const metadata: Metadata = {
+//   title: "YASH CONSTRUCTION | Infrastructure & Civil Engineering",
+//   description:
+//     "Class IA civil contracting firm specializing in highway paving, bridge works, and industrial plant operations across Ratnagiri District since 1984.",
+// };
+export const metadata = rootMetadata;
 
 export default function RootLayout({
   children,
@@ -33,6 +36,7 @@ export default function RootLayout({
       className={`${jakartaSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="font-sans min-h-full flex flex-col bg-white text-[#0F1117]">
+      <JsonLd data={localBusinessJsonLd} />
         <Navbar />
         {children}
         <Footer />

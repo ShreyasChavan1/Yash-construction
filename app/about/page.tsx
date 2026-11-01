@@ -5,6 +5,7 @@ import {
   type Variants,
 } from "motion/react";
 import { company } from "../lib/company";
+import SafeImage from "../components/SafeImage";
 
 
 const MAGENTA = "#E41B76";
@@ -472,10 +473,12 @@ export default function AboutPage() {
                 <Reveal key={partner.name} delay={index * 0.1}>
                   <article className="group overflow-hidden border border-[#E4E6EB] bg-white">
                     <div className="relative aspect-[4/5] overflow-hidden bg-[#E5E5E7]">
-                      <img
+                      <SafeImage
                         src={partner.image}
                         alt={partner.name}
-                        className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
+                        sizes="(min-width: 768px) 33vw, 100vw"
+                        label="Photograph to be added"
+                        className="grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
                       />
 
                       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-6 pt-20">

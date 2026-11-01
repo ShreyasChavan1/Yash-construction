@@ -6,7 +6,8 @@ import {
   type Variants,
 } from "motion/react";
 import { machinery as machineryData, formatQuantity } from "../lib/machinery";
-import { plantSite } from "../lib/plants";
+import { plantSite, plants as plantsData } from "../lib/plants";
+import SafeImage from "../components/SafeImage";
 
 
 const MAGENTA = "#E41B76";
@@ -238,10 +239,12 @@ export default function MachineryPage() {
                 >
                   {/* IMAGE */}
                   <div className="relative aspect-square overflow-hidden bg-[#26282E]">
-                    <img
+                    <SafeImage
                       src={machine.image}
                       alt={machine.name}
-                      className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
+                      sizes="(min-width: 1024px) 25vw, 50vw"
+                      tone="dark"
+                      className="grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -414,10 +417,11 @@ export default function MachineryPage() {
                       "polygon(0 0, 100% 0, 100% 82%, 82% 100%, 0 100%)",
                   }}
                 >
-                  <img
-                    src="/images/plants/asphalt-plant.jpg"
+                  <SafeImage
+                    src={plantsData[0]?.image}
                     alt="YASH CONSTRUCTION plant infrastructure"
-                    className="h-full w-full object-cover grayscale transition-transform duration-1000 hover:scale-105"
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    className="grayscale transition-transform duration-1000 hover:scale-105"
                   />
 
                   <div className="absolute inset-0 bg-black/20" />

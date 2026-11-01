@@ -4,6 +4,8 @@
  * Used by: Machinery page, Home page.
  */
 
+import type { ImagePath } from "./types";
+
 export type Machine = {
   slug: string;
   name: string;
@@ -11,7 +13,7 @@ export type Machine = {
   /** Extra wording after the quantity, e.g. "Nos Stone Crusher". */
   unit?: string;
   specification: string;
-  image: string;
+  image: ImagePath;
 };
 
 export const machinery: Machine[] = [

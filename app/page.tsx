@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   motion,
   useScroll,
@@ -13,6 +14,8 @@ import { company } from "./lib/company";
 import { featuredServices, governmentContracts } from "./lib/services";
 import { machinery as machineryData, formatQuantity } from "./lib/machinery";
 import { plants as plantsData, plantSite, getPlantSpecification } from "./lib/plants";
+import SafeImage from "./components/SafeImage";
+import { projects } from "./lib/projects";
 
 // Color System derived directly from Yash Construction Logo Vector
 const MAGENTA = "#E41B76"; // Primary Signature Accent
@@ -47,6 +50,10 @@ const stats = company.statistics.map((st) => ({
   label: st.label,
   caption: st.caption,
 }));
+
+const featuredProjects = (
+  projects.some((pr) => pr.featured) ? projects.filter((pr) => pr.featured) : projects
+).slice(0, 3);
 
 const plants = plantsData.map((pl) => ({
   name: pl.name,
@@ -142,10 +149,14 @@ export default function Home() {
             className="absolute inset-0"
             style={{ y: heroImageY, scale: heroImageScale }}
           >
-            <img
-              src="/images/hero-construction.jpg"
+            <SafeImage
+              src={company.images.hero}
               alt="Yash Construction Project Operations"
-              className="h-full w-full object-cover opacity-40"
+              sizes="100vw"
+              priority
+              label=""
+              tone="dark"
+              className="opacity-40"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#111318] via-[#111318]/75 to-transparent" />
           </motion.div>
@@ -282,10 +293,12 @@ export default function Home() {
               <Reveal delay={0.15}>
                 <div className="relative rounded-2xl border border-[#E4E6EB] bg-[#F4F5F8] p-3 shadow-sm">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-neutral-900">
-                    <img
-                      src="/images/company/company.jpg"
+                    <SafeImage
+                      src={company.images.company}
                       alt="Yash Construction Field Engineering"
-                      className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                      sizes="(min-width: 1024px) 45vw, 100vw"
+                      tone="dark"
+                      className="transition-transform duration-700 hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                     <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white">
@@ -385,10 +398,11 @@ export default function Home() {
                     transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                     className="absolute inset-0"
                   >
-                    <img
+                    <SafeImage
                       src={services[activeService].image}
                       alt={services[activeService].title}
-                      className="h-full w-full object-cover"
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      tone="dark"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                     <div className="absolute bottom-6 left-6 right-6 text-white">
@@ -456,10 +470,10 @@ export default function Home() {
                   </div>
 
                   <div className="relative my-4 aspect-[4/3] overflow-hidden rounded-xl bg-neutral-100">
-                    <img
+                    <SafeImage
                       src={item.image}
                       alt={item.name}
-                      className="h-full w-full object-cover"
+                      sizes="(min-width: 1024px) 25vw, 50vw"
                     />
                   </div>
 
@@ -511,10 +525,11 @@ export default function Home() {
               <Reveal delay={0.15}>
                 <div className="overflow-hidden rounded-2xl border border-[#E4E6EB] bg-white p-3 shadow-sm">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-neutral-900">
-                    <img
-                      src="/images/plants/asphalt-plant.jpg"
+                    <SafeImage
+                      src={plantsData[0]?.image}
                       alt={`${plantSite.name} plants`}
-                      className="h-full w-full object-cover"
+                      sizes="(min-width: 1024px) 45vw, 100vw"
+                      tone="dark"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                     <div className="absolute bottom-6 left-6 right-6 text-white">
@@ -532,6 +547,75 @@ export default function Home() {
                 </div>
               </Reveal>
             </div>
+          </div>
+        </section>
+
+        {/* =========================================================
+            FEATURED PROJECTS
+        ========================================================= */}
+        <section id="projects" className="border-t border-[#E4E6EB] bg-white py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
+            <Reveal>
+              <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+                <div>
+                  <span className="font-mono text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MAGENTA }}>
+                    FEATURED PROJECTS
+                  </span>
+                  <h2 className="mt-4 text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl text-[#111318]">
+                    Selected work.
+                  </h2>
+                </div>
+                <Link href="/projects" className="font-mono text-xs font-bold uppercase tracking-[0.15em] text-[#111318] hover:opacity-60">
+                  View all projects →
+                </Link>
+              </div>
+            </Reveal>
+
+            {featuredProjects.length > 0 ? (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {featuredProjects.map((project, index) => (
+                  <Reveal key={project.slug} delay={index * 0.1}>
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="group block overflow-hidden rounded-2xl border border-[#E4E6EB] bg-white transition-colors hover:border-[#111318]"
+                    >
+                      <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
+                        <SafeImage
+                          src={project.images[0]}
+                          alt={project.name}
+                          className="transition-transform duration-700 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="p-6">
+                        {project.category ? (
+                          <span className="font-mono text-[10px] font-bold uppercase tracking-widest" style={{ color: MAGENTA }}>
+                            {project.category}
+                          </span>
+                        ) : null}
+                        <h3 className="mt-2 text-xl font-black uppercase sm:text-2xl text-[#111318]">
+                          {project.name}
+                        </h3>
+                        <p className="mt-2 text-sm text-[#555A65]">
+                          {[project.client, project.location, project.year].filter(Boolean).join(" · ")}
+                        </p>
+                      </div>
+                    </Link>
+                  </Reveal>
+                ))}
+              </div>
+            ) : (
+              <Reveal>
+                <div className="rounded-2xl border border-dashed border-[#C9CCD3] px-6 py-16 text-center">
+                  <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: MAGENTA }}>
+                    PROJECT ARCHIVE
+                  </p>
+                  <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-[#555A65]">
+                    Featured projects will appear here once project information and approved photographs
+                    are provided by {company.name}.
+                  </p>
+                </div>
+              </Reveal>
+            )}
           </div>
         </section>
 
@@ -587,7 +671,7 @@ export default function Home() {
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3.5 py-1 text-xs text-white/80">
               <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: MAGENTA }} />
-              Direct Tender & Partner Inquiries
+              Project Enquiries
             </div>
 
             <h2 className="text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl mt-8 max-w-4xl text-white">
@@ -596,8 +680,8 @@ export default function Home() {
             </h2>
 
             <p className="mt-6 max-w-xl text-base text-white/60 md:text-lg">
-              Contact our engineering and tenders desk for joint venture works, departmental
-              tenders, or direct hot-mix supply.
+              Contact {company.name} for project enquiries, construction requirements and
+              business communication.
             </p>
 
             <div className="mt-12 flex flex-wrap gap-4">
@@ -627,7 +711,7 @@ export default function Home() {
               <div>
                 YASH CONSTRUCTION · LANJA, RATNAGIRI DISTRICT, MAHARASHTRA
               </div>
-              <div>© 2026 ALL RIGHTS RESERVED</div>
+              <div>© 1984 {new Date().getFullYear()} ALL RIGHTS RESERVED</div>
             </div>
           </motion.div>
         </section>

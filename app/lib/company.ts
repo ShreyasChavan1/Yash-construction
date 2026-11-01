@@ -5,6 +5,8 @@
  * Later, this file is the one a CMS / admin panel replaces.
  */
 
+import type { DocumentPath, ImagePath } from "./types";
+
 const PRIMARY_PHONE = "7798763555";
 
 /**
@@ -27,7 +29,7 @@ export type Registration = {
   value: string;
   description: string;
   /** Path to the certificate scan once supplied. */
-  document: string | null;
+  document: DocumentPath;
 };
 
 export type Statistic = {
@@ -38,7 +40,7 @@ export type Statistic = {
 };
 
 export type CoreValue = { title: string; description: string };
-export type Partner = { name: string; role: string; image: string };
+export type Partner = { name: string; role: string; image: ImagePath };
 
 const phones = [
   { label: "Primary", number: PRIMARY_PHONE },
@@ -78,6 +80,13 @@ export const company = {
 
   pan: "AAAFY3458L",
 
+  /** Page-level photos. Files may not exist yet; pages show a placeholder. */
+  images: {
+    hero: "/images/hero-construction.jpg" as ImagePath,
+    company: "/images/company/company.jpg" as ImagePath,
+    plantsHero: "/images/plants/plants-hero.jpg" as ImagePath,
+  },
+
   address: {
     short: "YASH CONSTRUCTION - LANJA, TAL-LANJA, DIST-RATNAGIRI",
     line1: "Yash Construction-1933, Radhai Niwas",
@@ -112,6 +121,12 @@ export const company = {
     { value: "100+", label: "Employees" },
   ] as Statistic[],
 
+  /**
+   * `document` is null until the client supplies the scan. To switch on the
+   * "View Certificate" link, save the file under /public/documents/ and set it:
+   *   GST "/documents/gst-certificate.pdf", MSME "/documents/msme-udyam-certificate.pdf",
+   *   PWD "/documents/pwd-registration.pdf", Partnership "/documents/partnership-registration.pdf"
+   */
   registrations: [
     {
       id: "gst",

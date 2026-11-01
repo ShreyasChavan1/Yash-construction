@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { motion, type Variants } from "motion/react";
-import Image from "next/image";
 import { plants as plantsData, plantSite, getPlantSpecification } from "../lib/plants";
+import SafeImage from "../components/SafeImage";
+import { company } from "../lib/company";
 
 const MAGENTA = "#E41B76";
 
@@ -54,13 +55,13 @@ export default function PlantsPage() {
 <section className="relative min-h-[75vh] overflow-hidden flex items-end">
 
   <div className="absolute inset-0 z-0">
-    <Image
-      src="/images/plants/plants-hero.jpg"
+    <SafeImage
+      src={company.images.plantsHero}
       alt="YASH CONSTRUCTION plant infrastructure"
-      fill
-      priority
       sizes="100vw"
-      className="object-cover"
+      priority
+      label=""
+      tone="dark"
     />
 
     <div className="absolute inset-0 bg-black/55" />
@@ -165,12 +166,12 @@ export default function PlantsPage() {
                 >
                   <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] bg-white/5">
 
-                    <Image
+                    <SafeImage
                       src={plant.image}
                       alt={plant.name}
-                      fill
                       sizes="(min-width: 1024px) 58vw, 100vw"
-                      className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
+                      tone="dark"
+                      className="transition-transform duration-700 hover:scale-[1.03]"
                     />
 
                     <div className="absolute top-5 left-5 bg-[#111318] px-4 py-2">

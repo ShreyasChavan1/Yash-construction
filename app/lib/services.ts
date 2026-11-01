@@ -3,6 +3,8 @@
  * Used by: Services page, Home page.
  */
 
+import type { ImagePath } from "./types";
+
 export type Service = {
   slug: string;
   number: string;
@@ -12,7 +14,7 @@ export type Service = {
   description: string;
   items: string[];
   /** Expected image path; add the file under /public when supplied. */
-  image?: string;
+  image: ImagePath;
   /** Shown in the Home page services preview. */
   featured?: boolean;
 };
@@ -45,6 +47,7 @@ export const services: Service[] = [
     tag: "INDUSTRIAL",
     description: "Construction and development of industrial structures and supporting facilities.",
     items: ["Factory Sheds"],
+    image: "/images/services/industrial-construction.jpg",
   },
   {
     slug: "earthwork-excavation",
@@ -63,6 +66,7 @@ export const services: Service[] = [
     tag: "ASPHALT",
     description: "Asphalt production capabilities supporting road construction and surfacing requirements.",
     items: ["Carpet", "BM", "BC"],
+    image: "/images/services/asphalt-bitumen.jpg",
   },
   {
     slug: "rmc-aggregate",
@@ -71,6 +75,7 @@ export const services: Service[] = [
     tag: "RMC & AGGREGATE",
     description: "Production and processing infrastructure for concrete and construction aggregates.",
     items: ["RMC - All Grades of Concrete", "Crushed Aggregate Material", "Wash Sand"],
+    image: "/images/services/rmc-aggregate.jpg",
   },
   {
     slug: "bridge-construction",
@@ -89,6 +94,7 @@ export const services: Service[] = [
     tag: "DRAINAGE",
     description: "Drainage and associated civil works supporting road and infrastructure projects.",
     items: ["Drainage Works"],
+    image: "/images/services/drainage-work.jpg",
   },
   {
     slug: "warehouse-construction",
@@ -97,6 +103,7 @@ export const services: Service[] = [
     tag: "WAREHOUSE",
     description: "Construction of warehouse and supporting industrial storage structures.",
     items: ["Warehouse Construction"],
+    image: "/images/services/warehouse-construction.jpg",
   },
 ];
 

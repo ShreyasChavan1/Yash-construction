@@ -3,6 +3,8 @@
  * Used by: Plants page, Home page.
  */
 
+import type { ImagePath } from "./types";
+
 export type Plant = {
   slug: string;
   name: string;
@@ -14,7 +16,7 @@ export type Plant = {
   location: string;
   /** Short location label for compact cards. */
   shortLocation: string;
-  image: string;
+  image: ImagePath;
   description: string;
 };
 

@@ -337,19 +337,33 @@ export default function CredentialsPage() {
 
                     </div>
 
-                    <span className="text-xs uppercase tracking-wider text-white/30">
-                      Certificate
-                    </span>
+                    {registration.document ? (
+                      <a
+                        href={registration.document}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold uppercase tracking-wider transition hover:opacity-70"
+                        style={{ color: MAGENTA }}
+                      >
+                        View Certificate →
+                      </a>
+                    ) : (
+                      <span className="text-xs uppercase tracking-wider text-white/30">
+                        Pending
+                      </span>
+                    )}
 
                   </div>
                 ))}
 
               </div>
 
-              <p className="mt-6 text-sm text-white/35 leading-relaxed">
-                Official certificate files and document scans will be added
-                once supplied by YASH CONSTRUCTION.
-              </p>
+              {registrations.some((r) => !r.document) && (
+                <p className="mt-6 text-sm text-white/35 leading-relaxed">
+                  Official certificate files and document scans will be added
+                  once supplied by YASH CONSTRUCTION.
+                </p>
+              )}
 
             </div>
 

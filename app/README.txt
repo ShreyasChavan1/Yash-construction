@@ -1,13 +1,15 @@
-PHASE 12A + 12B (complete): central content layer
-Unzip so this folder's contents land inside your project's app/ folder. This overwrites
-app/page.tsx, the page folders, components/Navbar.tsx, components/Footer.tsx and app/lib/*.
-Back up first. app/lib/projects.ts is your original file (kept empty).
+PHASE 12D: image fallbacks, filters, certificates, shared types   (FULL app/ SNAPSHOT)
+Unzip into your project's app/ folder (replace when asked). Back up / git commit first.
+Delete this README from app/ afterwards.
 
-Edit content ONLY in app/lib/:
-  company.ts     company facts, contact, registrations, values, partners, statistics
-  services.ts    services + government-contract categories
-  machinery.ts   machinery list
-  plants.ts      plants + the Waghangaon plant site
-  projects.ts    projects (empty)
-  gallery.ts     gallery categories, photos (empty), shot list
-  navigation.ts  navbar, footer and "explore" links
+app/layout.tsx is NOT overwritten. It needs the 3 edits from the Phase 12C notes:
+  import { rootMetadata, localBusinessJsonLd } from "./lib/seo";
+  import JsonLd from "./components/JsonLd";
+  export const metadata = rootMetadata;            // replaces the old metadata block
+  <JsonLd data={localBusinessJsonLd} />            // first child inside <body>
+
+Where content goes (plug-and-play):
+  photos         public/images/...  (paths are listed in app/lib/*.ts)
+  certificates   public/documents/..., then set `document` in app/lib/company.ts
+  projects       app/lib/projects.ts  (add category + featured to use filters / Home)
+  gallery        app/lib/gallery.ts

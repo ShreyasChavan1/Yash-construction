@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import {
   motion,
   type Variants,
 } from "motion/react";
 
-import { projects } from "../lib/projects";
+import { projects, projectCategories, type ProjectCategory } from "../lib/projects";
 
 const MAGENTA = "#E41B76";
 
@@ -95,6 +96,12 @@ function SectionLabel({
 }
 
 export default function ProjectsPage() {
+  const [active, setActive] = useState<ProjectCategory | "All">("All");
+  // Only offer categories that actually have projects.
+  const presentCategories = projectCategories.filter((c) => projects.some((p) => p.category === c));
+  const visibleProjects =
+    active === "All" ? projects : projects.filter((p) => p.category === active);
+
   return (
     <>
 
@@ -197,14 +204,34 @@ export default function ProjectsPage() {
                 </div>
 
                 <div className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/35">
-                  {projects.length} Projects Listed
+                  {visibleProjects.length} Projects Listed
                 </div>
               </div>
             </Reveal>
 
+            {presentCategories.length > 0 && (
+              <div className="mb-10 flex flex-wrap gap-3">
+                {(["All", ...presentCategories] as const).map((category) => (
+                  <button
+                    key={category}
+                    type="button"
+                    aria-pressed={active === category}
+                    onClick={() => setActive(category)}
+                    className={`rounded-full border px-5 py-2.5 font-mono text-[11px] font-bold uppercase tracking-wider transition ${
+                      active === category
+                        ? "border-[#E41B76] bg-[#E41B76] text-white"
+                        : "border-white/20 text-white/60 hover:border-white hover:text-white"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {projects.length > 0 ? (
               <div className="border-t border-white/10">
-                {projects.map((project, index) => (
+                {visibleProjects.map((project, index) => (
                   <motion.div
                     key={project.slug}
                     initial={{
